@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ReactElement } from "react";
 import Image from "next/image";
 import { SignedIn, UserButton } from "@clerk/nextjs";
+import { ModeToggle } from "./ModeToggle";
 
 const Header = (): ReactElement => {
   return (
@@ -13,14 +14,15 @@ const Header = (): ReactElement => {
           height={23}
           alt="CodeFlow"
         />
-        <p className="h2-bold font-spaceGrotesk text-dark-100 dark:text-light-900 max-sm:hidden">
-          Dev <span className="text-primary-500">Overflow</span>
-        </p>
+        <div className="h2-bold flex align-baseline font-spaceGrotesk text-dark-100 dark:text-light-900 max-sm:hidden">
+          <div className="mr-1">Dev</div>{" "}
+          <div className=" mt-px text-primary-500">Overflow</div>
+        </div>
       </Link>
       <div>GlobalSerach</div>
 
       <div className="flex-between gap-5">
-        Theme
+        <ModeToggle />
         <SignedIn>
           <UserButton
             afterSignOutUrl="/"
