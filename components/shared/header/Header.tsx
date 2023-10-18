@@ -3,13 +3,13 @@ import { SignedIn, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "./ModeToggle";
 import Logo from "../Logo";
 import { MobileNav } from "../navbar/MobileNav";
+import GlobalSerach from "../GlobalSearch";
 
 const Header = (): ReactElement => {
   return (
-    <header className="flex-between background-light900_dark200 fixed z-50 w-full p-6 shadow-light-300 dark:shadow-none sm:px-6">
+    <header className="flex-between background-light900_dark200 fixed z-50 w-full p-4 shadow-light-300 dark:shadow-none sm:px-6">
       <Logo />
-      <div className="max-md:hidden">GlobalSerach</div>
-
+      <GlobalSerach />
       <div className="flex-between gap-5">
         <ModeToggle />
         <SignedIn>
