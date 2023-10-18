@@ -7,41 +7,58 @@ import Link from "next/link";
 import Image from "next/image";
 import { SheetClose } from "@/components/ui/sheet";
 
-const Navbar = (): ReactElement => {
+const Navbar = ({ isMobile }: { isMobile?: boolean }): ReactElement => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex h-full flex-col gap-6 pt-16">
+    <nav className="flex h-full flex-col gap-4">
       {sidebarLinks.map((link) => {
         const isActive =
           (pathname.includes(link.route) && link.route.length > 1) ||
           pathname === link.route;
-        return (
+        return isMobile ? (
           <SheetClose key={link.route}>
-            <Link
-              href={link.route}
-              className={`${
-                isActive
-                  ? "primary-gradient rounded-lg text-light-900"
-                  : "text-dark300_light900"
-              } flex items-center justify-start gap-4 bg-transparent p-4`}
-            >
-              <Image
-                src={link.imgURL}
-                alt={link.label}
-                width={20}
-                height={20}
-                className={`${isActive ? "" : "invert-colors"}`}
-              />
-              <p className={`${isActive ? "base-bold" : "base-medium"}`}>
-                {link.label}
-              </p>
-            </Link>
+            <NavLink {...link} isActive={isActive} />
           </SheetClose>
+        ) : (
+          <NavLink {...link} isActive={isActive} />
         );
       })}
     </nav>
   );
 };
+
+function NavLink({
+  route,
+  isActive,
+  imgURL,
+  label
+}: {
+  route: string;
+  isActive: boolean;
+  imgURL: string;
+  label: string;
+}): ReactElement {
+  return (
+    <Link
+      key={route}
+      href={route}
+      className={`${
+        isActive
+          ? "primary-gradient rounded-lg text-light-900"
+          : "text-dark300_light900"
+      } flex items-center justify-start gap-4 bg-transparent p-2`}
+    >
+      <Image
+        src={imgURL}
+        alt={label}
+        width={20}
+        height={20}
+        className={`${isActive ? "" : "invert-colors"}`}
+      />
+      <p className={`${isActive ? "base-bold" : "base-medium"}`}>{label}</p>
+    </Link>
+  );
+}
 
 export default Navbar;

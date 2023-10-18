@@ -1,3 +1,4 @@
+import LeftSidebar from "@/components/shared/LeftSidebar";
 import Header from "@/components/shared/header/Header";
 import React, { ReactElement } from "react";
 
@@ -10,14 +11,9 @@ const RootLayout = ({
     <main className="background-light850_dark100 relative">
       <Header />
       <div className="flex">
-        <nav
-          className="background-light900_dark200 light-border custom-scrollbar sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-r p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]"
-          style={{ width: "200px" }}
-        >
-          Navbar
-        </nav>
+        <LeftSidebar />
 
-        <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-36 max-md:pb-14 sm:px-14">
+        <section className="flex min-h-screen flex-1 flex-col px-4 pb-6 pt-28 max-md:pb-14 sm:px-14">
           <div className="mx-auto w-full max-w-5xl">{children}</div>
         </section>
 

@@ -30,10 +30,10 @@ export function MobileNav() {
         <SheetHeader>
           <Logo />
         </SheetHeader>
-        <div>
-          <Navbar />
+        <div className="pt-16">
+          <Navbar isMobile />
           <SignedOut>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 pt-10">
               <SheetClose asChild>
                 <Link
                   href="/sign-in"
