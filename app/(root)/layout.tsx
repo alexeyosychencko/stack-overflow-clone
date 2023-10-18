@@ -1,4 +1,4 @@
-import Header from "@/components/header/Header";
+import Header from "@/components/shared/header/Header";
 import React, { ReactElement } from "react";
 
 const RootLayout = ({
