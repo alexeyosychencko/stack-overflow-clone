@@ -1,4 +1,4 @@
-import Navbar from "@/components/shared/Navbar";
+import Navbar from "@/components/shared/navbar/Navbar";
 import Header from "@/components/shared/header/Header";
 import React, { ReactElement } from "react";
 

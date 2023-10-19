@@ -21,7 +21,7 @@ const NavbarMenu = ({ isMobile }: { isMobile?: boolean }): ReactElement => {
             <MenuLink {...link} isActive={isActive} />
           </SheetClose>
         ) : (
-          <MenuLink {...link} isActive={isActive} />
+          <MenuLink {...link} isActive={isActive} key={link.route} />
         );
       })}
     </menu>

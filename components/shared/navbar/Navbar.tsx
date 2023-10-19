@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import NavbarMenu from "./navbar/NavbarMenu";
+import NavbarMenu from "./NavbarMenu";
 
 const Navbar = (): ReactElement => {
   return (
