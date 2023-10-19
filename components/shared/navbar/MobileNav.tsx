@@ -9,7 +9,7 @@ import Image from "next/image";
 import Logo from "../Logo";
 import Link from "next/link";
 import { SignedOut } from "@clerk/nextjs";
-import Navbar from "./Navbar";
+import NavbarMenu from "./NavbarMenu";
 
 export function MobileNav() {
   return (
@@ -31,7 +31,7 @@ export function MobileNav() {
           <Logo />
         </SheetHeader>
         <div className="pt-16">
-          <Navbar isMobile />
+          <NavbarMenu isMobile />
           <SignedOut>
             <div className="flex flex-col gap-3 pt-10">
               <SheetClose asChild>

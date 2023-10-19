@@ -7,28 +7,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { SheetClose } from "@/components/ui/sheet";
 
-const Navbar = ({ isMobile }: { isMobile?: boolean }): ReactElement => {
+const NavbarMenu = ({ isMobile }: { isMobile?: boolean }): ReactElement => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex h-full flex-col gap-4">
+    <menu className="flex h-full flex-col gap-4">
       {sidebarLinks.map((link) => {
         const isActive =
           (pathname.includes(link.route) && link.route.length > 1) ||
           pathname === link.route;
         return isMobile ? (
           <SheetClose key={link.route}>
-            <NavLink {...link} isActive={isActive} />
+            <MenuLink {...link} isActive={isActive} />
           </SheetClose>
         ) : (
-          <NavLink {...link} isActive={isActive} />
+          <MenuLink {...link} isActive={isActive} />
         );
       })}
-    </nav>
+    </menu>
   );
 };
 
-function NavLink({
+function MenuLink({
   route,
   isActive,
   imgURL,
@@ -61,4 +61,4 @@ function NavLink({
   );
 }
 
-export default Navbar;
+export default NavbarMenu;
