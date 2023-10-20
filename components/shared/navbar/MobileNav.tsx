@@ -7,9 +7,10 @@ import {
 } from "@/components/ui/sheet";
 import Image from "next/image";
 import Logo from "../Logo";
-import Link from "next/link";
 import { SignedOut } from "@clerk/nextjs";
 import NavbarMenu from "./NavbarMenu";
+import { LogInBtn } from "../LogInBtn";
+import { SignInBtn } from "../SignInBtn";
 
 export function MobileNav() {
   return (
@@ -35,20 +36,10 @@ export function MobileNav() {
           <SignedOut>
             <div className="flex flex-col gap-3 pt-10">
               <SheetClose asChild>
-                <Link
-                  href="/sign-in"
-                  className="btn-secondary small-medium min-h-[41px] w-full rounded-lg px-4 py-3 text-center"
-                >
-                  <span className="primary-text-gradient">Log In</span>
-                </Link>
+                <LogInBtn />
               </SheetClose>
               <SheetClose asChild>
-                <Link
-                  href="/sign-up"
-                  className="btn-tertiary  small-medium min-h-[41px] w-full rounded-lg px-4 py-3 text-center"
-                >
-                  Sign Up
-                </Link>
+                <SignInBtn />
               </SheetClose>
             </div>
           </SignedOut>
