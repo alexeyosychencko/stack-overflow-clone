@@ -1,4 +1,6 @@
 import LocalSearch from "@/components/search/LocalSearch";
+import Filter from "@/components/shared/filter/Filter";
+import { HomePageFilters } from "@/components/shared/filter/consts";
 import Link from "next/link";
 import { ReactElement } from "react";
 
@@ -15,9 +17,9 @@ const Home = (): ReactElement => {
         </Link>
       </div>
 
-      <div className="mt-11 flex flex-col justify-between gap-5">
-        <LocalSearch />
-        <div>Filter</div>
+      <div className="mt-11 flex justify-between gap-5 max-sm:flex-col">
+        <LocalSearch route="/" placeholder="Search for questions" />
+        <Filter filters={HomePageFilters} />
       </div>
     </>
   );

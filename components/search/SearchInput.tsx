@@ -4,9 +4,11 @@ import Image from "next/image";
 
 const SerachInput = ({
   value,
+  placeholder,
   classes
 }: {
   value?: string;
+  placeholder: string;
   classes?: string;
 }): ReactElement => {
   return (
@@ -22,7 +24,7 @@ const SerachInput = ({
       />
       <Input
         type="text"
-        placeholder="Search globaly"
+        placeholder={placeholder}
         className="paragraph-regular no-focus placeholder text-dark400_light500 border-none bg-transparent"
       />
     </div>
