@@ -2,9 +2,17 @@ import { ReactElement } from "react";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 
-const GlobalSerach = (): ReactElement => {
+const SerachInput = ({
+  value,
+  classes
+}: {
+  value?: string;
+  classes?: string;
+}): ReactElement => {
   return (
-    <div className="background-light800_darkgradient relative flex w-full max-w-[600px] rounded-md px-3 py-1 max-md:hidden">
+    <div
+      className={`background-light800_darkgradient relative flex w-full rounded-md px-3 py-1 ${classes}`}
+    >
       <Image
         src="/assets/icons/search.svg"
         alt="search"
@@ -21,4 +29,4 @@ const GlobalSerach = (): ReactElement => {
   );
 };
 
-export default GlobalSerach;
+export default SerachInput;

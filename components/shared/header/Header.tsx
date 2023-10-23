@@ -3,7 +3,7 @@ import { SignedIn, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "./ModeToggle";
 import Logo from "../Logo";
 import { MobileNav } from "../navbar/MobileNav";
-import GlobalSerach from "../GlobalSearch";
+import GlobalSerach from "../../search/GlobalSearch";
 
 const Header = (): ReactElement => {
   return (
