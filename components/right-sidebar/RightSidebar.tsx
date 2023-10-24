@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { mockHotQuestions, mockPopularTags } from "./consts";
 import Link from "next/link";
 import Image from "next/image";
-import RenderTag from "../RenderTag";
+import RenderTag from "../shared/RenderTag";
 
 const RightSidebar = (): ReactElement => {
   return (

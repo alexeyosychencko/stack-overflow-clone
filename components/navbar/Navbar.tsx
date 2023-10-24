@@ -1,8 +1,8 @@
 import { ReactElement } from "react";
 import NavbarMenu from "./NavbarMenu";
 import { SignedOut } from "@clerk/nextjs";
-import { LogInBtn } from "../LogInBtn";
-import { SignInBtn } from "../SignInBtn";
+import { LogInBtn } from "../shared/LogInBtn";
+import { SignInBtn } from "../shared/SignInBtn";
 
 const Navbar = (): ReactElement => {
   return (

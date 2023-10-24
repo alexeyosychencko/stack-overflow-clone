@@ -6,11 +6,11 @@ import {
   SheetTrigger
 } from "@/components/ui/sheet";
 import Image from "next/image";
-import Logo from "../Logo";
+import Logo from "../shared/Logo";
 import { SignedOut } from "@clerk/nextjs";
 import NavbarMenu from "./NavbarMenu";
-import { LogInBtn } from "../LogInBtn";
-import { SignInBtn } from "../SignInBtn";
+import { LogInBtn } from "../shared/LogInBtn";
+import { SignInBtn } from "../shared/SignInBtn";
 
 export function MobileNav() {
   return (

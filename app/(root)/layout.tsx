@@ -1,7 +1,7 @@
-import Navbar from "@/components/shared/navbar/Navbar";
-import Header from "@/components/shared/header/Header";
+import Navbar from "@/components/navbar/Navbar";
+import Header from "@/components/header/Header";
 import React, { ReactElement } from "react";
-import RightSidebar from "@/components/shared/right-sidebar/RightSidebar";
+import RightSidebar from "@/components/right-sidebar/RightSidebar";
 
 const RootLayout = ({
   children

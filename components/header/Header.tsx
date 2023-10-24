@@ -1,9 +1,9 @@
 import { ReactElement } from "react";
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "./ModeToggle";
-import Logo from "../Logo";
+import Logo from "../shared/Logo";
 import { MobileNav } from "../navbar/MobileNav";
-import GlobalSerach from "../search/GlobalSearch";
+import GlobalSerach from "../shared/search/GlobalSearch";
 
 const Header = (): ReactElement => {
   return (

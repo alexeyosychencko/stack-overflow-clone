@@ -26,7 +26,7 @@ const mockQuestions: QuestionProps[] = [
     upvotes: ["user_id1", "user_id2", "user_id3"],
     answers: [],
     views: 100,
-    createdAt: new Date("2021-09-01T12:00:00.000Z")
+    createdAt: new Date("2022-09-01T12:00:00.000Z")
   },
   {
     _id: "2",
@@ -45,7 +45,7 @@ const mockQuestions: QuestionProps[] = [
     upvotes: ["user_id4", "user_id5", "user_id6"],
     answers: [],
     views: 134,
-    createdAt: new Date("2021-09-01T12:00:00.000Z")
+    createdAt: new Date("2022-09-01T12:00:00.000Z")
   }
 ];
 
