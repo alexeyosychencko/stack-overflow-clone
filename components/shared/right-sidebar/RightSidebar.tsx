@@ -8,12 +8,12 @@ const RightSidebar = (): ReactElement => {
   return (
     <section className="background-light900_dark200 light-border custom-scrollbar sticky right-0 top-0 flex h-screen w-[330px] flex-col overflow-y-auto border-l p-6 pt-28 shadow-light-300 dark:shadow-none max-xl:hidden">
       <div>
-        <h2 className="h3-bold text-dark200_light900">Hot Networks</h2>
+        <h3 className="h3-bold text-dark200_light900">Hot Networks</h3>
         <ul className="mt-7 flex w-full flex-col gap-[30px]">
           {mockHotQuestions.map((question) => (
-            <li key={question.id}>
+            <li key={question._id}>
               <Link
-                href={`/question/${question.id}`}
+                href={`/question/${question._id}`}
                 className="flex cursor-pointer items-center justify-between gap-7"
               >
                 <p className="body-medium text-dark500_light700">
@@ -32,12 +32,12 @@ const RightSidebar = (): ReactElement => {
         </ul>
       </div>
       <div className="mt-16">
-        <h2 className="h3-bold text-dark200_light900">Popular Tags</h2>
+        <h3 className="h3-bold text-dark200_light900">Popular Tags</h3>
         <ul className="mt-7 flex w-full flex-col gap-4">
           {mockPopularTags.map((tag) => (
-            <li key={tag.id}>
+            <li key={tag._id}>
               <RenderTag
-                id={tag.id}
+                _id={tag._id}
                 name={tag.name}
                 totalQuestions={tag.numberOfQuestions}
                 showCount

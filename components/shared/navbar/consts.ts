@@ -1,6 +1,6 @@
-import { SidebarLink } from "./types";
+import { NavbarLink } from "./types";
 
-export const sidebarLinks: SidebarLink[] = [
+export const navbarLinks: NavbarLink[] = [
   {
     imgURL: "/assets/icons/home.svg",
     route: "/",

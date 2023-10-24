@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { ReactElement } from "react";
-import { sidebarLinks } from "./consts";
+import { navbarLinks } from "./consts";
 import Link from "next/link";
 import Image from "next/image";
 import { SheetClose } from "@/components/ui/sheet";
@@ -12,7 +12,7 @@ const NavbarMenu = ({ isMobile }: { isMobile?: boolean }): ReactElement => {
 
   return (
     <menu className="flex h-full flex-col gap-4">
-      {sidebarLinks.map((link) => {
+      {navbarLinks.map((link) => {
         const isActive =
           (pathname.includes(link.route) && link.route.length > 1) ||
           pathname === link.route;
