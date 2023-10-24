@@ -5,10 +5,15 @@ export interface QuestionProps {
     _id: string;
     name: string;
   }[];
-  author: string;
-  upvotes: number;
+  author: {
+    _id: string;
+    name: string;
+    picture: string;
+    clerkId: string;
+  };
+  upvotes: string[];
   views: number;
-  answers: number;
-  createdAt: string;
+  answers: Array<object>;
+  createdAt: Date;
   clerkId?: string | null;
 }

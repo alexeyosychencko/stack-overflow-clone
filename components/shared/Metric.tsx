@@ -16,7 +16,7 @@ const Metric = ({ imgUrl, alt, value, title }: MetricProps) => {
         width={16}
         height={16}
         alt={alt}
-        className="object-contain"
+        className="mt-[-3px] object-contain"
       />
 
       <p className="small-medium text-dark400_light800 flex items-center gap-1">

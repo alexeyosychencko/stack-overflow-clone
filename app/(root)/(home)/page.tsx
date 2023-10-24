@@ -12,30 +12,40 @@ const mockQuestions: QuestionProps[] = [
   {
     _id: "1",
     title: "How to use React Query?",
-    author: "Joen See",
+    author: {
+      _id: "1",
+      name: "Joen See",
+      picture: "/assets/icons/avatar.svg",
+      clerkId: "clerk_id"
+    },
     tags: [
       { _id: "1", name: "react" },
       { _id: "2", name: "javascript" },
       { _id: "3", name: "typescript" }
     ],
-    upvotes: 5,
-    answers: 2,
+    upvotes: ["user_id1", "user_id2", "user_id3"],
+    answers: [],
     views: 100,
-    createdAt: "2021-09-01T12:00:00.000Z"
+    createdAt: new Date("2021-09-01T12:00:00.000Z")
   },
   {
     _id: "2",
     title: "How to use Typescript?",
-    author: "Joen Lee",
+    author: {
+      _id: "2",
+      name: "Joen Lee",
+      picture: "/assets/icons/avatar.svg",
+      clerkId: "clerk_id"
+    },
     tags: [
       { _id: "1", name: "react" },
       { _id: "2", name: "javascript" },
       { _id: "3", name: "typescript" }
     ],
-    upvotes: 15,
-    answers: 22,
+    upvotes: ["user_id4", "user_id5", "user_id6"],
+    answers: [],
     views: 134,
-    createdAt: "2021-09-01T12:00:00.000Z"
+    createdAt: new Date("2021-09-01T12:00:00.000Z")
   }
 ];
 
@@ -62,7 +72,10 @@ const Home = (): ReactElement => {
             <QuestionCard key={question._id} {...question} />
           ))
         ) : (
-          <NoResult />
+          <NoResult
+            title="There’s no question to show"
+            description="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
+          />
         )}
       </div>
     </>
