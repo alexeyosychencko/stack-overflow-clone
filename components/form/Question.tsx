@@ -20,6 +20,7 @@ import { useTheme } from "next-themes";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import { createQuestion } from "@/lib/actions/question.action";
 
 interface Props {
   type?: string;
@@ -47,8 +48,14 @@ const Question = ({ type, questionDetails }: Props): ReactElement => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof questionSchema>) {
+  async function onSubmit(values: z.infer<typeof questionSchema>) {
     setIsSubmitting(true);
+
+    try {
+      await createQuestion();
+    } catch (error) {}
+
+    setIsSubmitting(false);
   }
 
   const handleInputTagKeyDown = (
