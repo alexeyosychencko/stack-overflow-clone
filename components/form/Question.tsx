@@ -21,16 +21,25 @@ import { Badge } from "../ui/badge";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { createQuestion } from "@/lib/actions/question.action";
+import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 interface Props {
   type?: string;
+  mongoUserId: string;
   questionDetails?: string;
 }
 
-const Question = ({ type, questionDetails }: Props): ReactElement => {
+const Question = ({
+  type,
+  mongoUserId,
+  questionDetails
+}: Props): ReactElement => {
   const { theme } = useTheme();
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const parsedQuestionDetails =
     questionDetails && JSON.parse(questionDetails || "");
@@ -52,8 +61,19 @@ const Question = ({ type, questionDetails }: Props): ReactElement => {
     setIsSubmitting(true);
 
     try {
-      await createQuestion();
-    } catch (error) {}
+      await createQuestion({
+        title: values.title,
+        explanation: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+        path: pathname
+      });
+
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+      // TODO: Handle error, show toast
+    }
 
     setIsSubmitting(false);
   }
