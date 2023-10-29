@@ -21,8 +21,7 @@ import { Badge } from "../ui/badge";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { createQuestion } from "@/lib/actions/question.action";
-import { useRouter } from "next/router";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   type?: string;
@@ -59,15 +58,17 @@ const Question = ({
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof questionSchema>) {
     setIsSubmitting(true);
-
+    console.log(values, mongoUserId);
     try {
       await createQuestion({
         title: values.title,
         explanation: values.explanation,
         tags: values.tags,
-        author: JSON.parse(mongoUserId),
+        author: mongoUserId,
         path: pathname
       });
+
+      // TODO: add toast
 
       router.push("/");
     } catch (error) {

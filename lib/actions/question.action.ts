@@ -1,25 +1,26 @@
 "use server";
 
-import { Schema } from "mongoose";
 import { connectToDb } from "../mongoose";
-import UserModel, { User } from "@/database/user.model";
+// import UserModel from "@/database/user.model";
 import QuestionModel from "@/database/question.model";
 import TagModel from "@/database/tag.model";
 import { revalidatePath } from "next/cache";
 import InteractionModel from "@/database/interaction.model";
+import UserModel from "@/database/user.model";
 
 export async function createQuestion(params: {
   title: string;
   explanation: string;
   tags: string[];
-  author: Schema.Types.ObjectId | User;
+  author: string;
   path: string;
-}) {
+}): Promise<void> {
+  const conn = await connectToDb();
+  const session = await conn.startSession();
+
+  const { title, explanation, tags, author, path } = params;
   try {
-    connectToDb();
-
-    const { title, explanation, tags, author, path } = params;
-
+    session.startTransaction();
     // Create the question
     const question = await QuestionModel.create({
       title,
@@ -55,9 +56,12 @@ export async function createQuestion(params: {
     // Increment author's reputation by +5 for creating a question
     await UserModel.findByIdAndUpdate(author, { $inc: { reputation: 5 } });
 
+    await session.commitTransaction();
+
     revalidatePath(path);
   } catch (error) {
     console.log(error);
+    await session.abortTransaction();
     throw error;
   }
 }

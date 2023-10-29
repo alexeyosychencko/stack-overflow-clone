@@ -2,7 +2,7 @@
 const nextConfig = {
   experimental: {
     serverActions: true,
-    // mdxRss: true,
+    esmExternals: "loose",
     serverComponentsExternalPackages: ["mongoose"]
   }
 };
