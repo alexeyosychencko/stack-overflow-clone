@@ -25,6 +25,6 @@ const questionSchema = new Schema<Question>({
 });
 
 const QuestionModel =
-  models.Question || model<Question>("Question", questionSchema);
+  models.Question<Question> || model<Question>("Question", questionSchema);
 
 export default QuestionModel;

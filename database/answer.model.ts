@@ -9,7 +9,7 @@ export interface Answer extends Document {
   createdAt: Date;
 }
 
-const AnswerSchema = new Schema({
+const AnswerSchema = new Schema<Answer>({
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -42,6 +42,7 @@ const AnswerSchema = new Schema({
   }
 });
 
-const AnswerModel = models.Answer || model("Answer", AnswerSchema);
+const AnswerModel =
+  models.Answer<Answer> || model<Answer>("Answer", AnswerSchema);
 
 export default AnswerModel;
