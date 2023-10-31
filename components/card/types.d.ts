@@ -11,9 +11,9 @@ export interface QuestionProps {
     picture: string;
     clerkId: string;
   };
-  upvotes: string[];
-  views: number;
-  answers: Array<object>;
+  upvotes?: string[];
+  views?: number;
+  answers?: Array<object>;
   createdAt: Date;
   clerkId?: string | null;
 }

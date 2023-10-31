@@ -1,6 +1,7 @@
 import { Schema, models, model, Document } from "mongoose";
 
 export interface User extends Document {
+  _id: string;
   clerkId: string;
   name: string;
   username: string;
@@ -30,6 +31,6 @@ const UserSchema = new Schema<User>({
   joinedAt: { type: Date, default: Date.now }
 });
 
-const UserModel = models.User<User> || model<User>("User", UserSchema);
+const UserModel = models.User || model<User>("User", UserSchema);
 
 export default UserModel;

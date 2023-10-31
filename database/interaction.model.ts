@@ -19,7 +19,6 @@ const InteractionSchema = new Schema<Interaction>({
 });
 
 const InteractionModel =
-  models.Interaction<Interaction> ||
-  model<Interaction>("Interaction", InteractionSchema);
+  models.Interaction || model<Interaction>("Interaction", InteractionSchema);
 
 export default InteractionModel;

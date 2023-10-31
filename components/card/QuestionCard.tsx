@@ -58,19 +58,19 @@ const QuestionCard = ({
           <Metric
             imgUrl="/assets/icons/like.svg"
             alt="Upvotes"
-            value={formatAndDivideNumber(upvotes.length)}
+            value={formatAndDivideNumber(upvotes?.length || 0)}
             title=" Votes"
           />
           <Metric
             imgUrl="/assets/icons/message.svg"
             alt="message"
-            value={formatAndDivideNumber(answers.length)}
+            value={formatAndDivideNumber(answers?.length || 0)}
             title=" Answers"
           />
           <Metric
             imgUrl="/assets/icons/eye.svg"
             alt="eye"
-            value={formatAndDivideNumber(views)}
+            value={formatAndDivideNumber(views || 0)}
             title=" Views"
           />
         </div>

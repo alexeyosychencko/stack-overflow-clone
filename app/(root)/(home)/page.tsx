@@ -4,52 +4,18 @@ import { HomePageFilters } from "@/components/shared/filter/consts";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ReactElement } from "react";
-import { QuestionProps } from "@/components/card/types";
 import QuestionCard from "@/components/card/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
+import { auth } from "@clerk/nextjs";
+import { getQuestions } from "@/lib/actions/question.action";
+import { Tag } from "@/database/tag.model";
+import { User } from "@/database/user.model";
 
-const mockQuestions: QuestionProps[] = [
-  {
-    _id: "1",
-    title: "How to use React Query?",
-    author: {
-      _id: "1",
-      name: "Joen See",
-      picture: "/assets/icons/avatar.svg",
-      clerkId: "clerk_id"
-    },
-    tags: [
-      { _id: "1", name: "react" },
-      { _id: "2", name: "javascript" },
-      { _id: "3", name: "typescript" }
-    ],
-    upvotes: ["user_id1", "user_id2", "user_id3"],
-    answers: [],
-    views: 100,
-    createdAt: new Date("2022-09-01T12:00:00.000Z")
-  },
-  {
-    _id: "2",
-    title: "How to use Typescript?",
-    author: {
-      _id: "2",
-      name: "Joen Lee",
-      picture: "/assets/icons/avatar.svg",
-      clerkId: "clerk_id"
-    },
-    tags: [
-      { _id: "1", name: "react" },
-      { _id: "2", name: "javascript" },
-      { _id: "3", name: "typescript" }
-    ],
-    upvotes: ["user_id4", "user_id5", "user_id6"],
-    answers: [],
-    views: 134,
-    createdAt: new Date("2022-09-01T12:00:00.000Z")
-  }
-];
+const Home = async (): Promise<ReactElement> => {
+  const { userId } = auth();
 
-const Home = (): ReactElement => {
+  const questions = await getQuestions();
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -67,9 +33,20 @@ const Home = (): ReactElement => {
       </div>
 
       <div className="mt-11 flex w-full flex-col gap-6">
-        {mockQuestions.length ? (
-          mockQuestions.map((question) => (
-            <QuestionCard key={question._id} {...question} />
+        {questions.length ? (
+          questions.map((question) => (
+            <QuestionCard
+              key={question._id}
+              _id={question._id}
+              title={question.title}
+              tags={question.tags as Tag[]}
+              author={question.author as User}
+              upvotes={question.upvotes as any}
+              views={question.views as any}
+              answers={question.answers as any}
+              createdAt={question.createdAt as any}
+              clerkId={userId}
+            />
           ))
         ) : (
           <NoResult

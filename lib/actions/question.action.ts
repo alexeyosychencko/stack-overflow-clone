@@ -2,11 +2,28 @@
 
 import { connectToDb } from "../mongoose";
 // import UserModel from "@/database/user.model";
-import QuestionModel from "@/database/question.model";
-import TagModel from "@/database/tag.model";
+import QuestionModel, { Question } from "@/database/question.model";
+import TagModel, { Tag } from "@/database/tag.model";
 import { revalidatePath } from "next/cache";
 import InteractionModel from "@/database/interaction.model";
-import UserModel from "@/database/user.model";
+import UserModel, { User } from "@/database/user.model";
+
+export async function getQuestions(
+  page?: number,
+  pageSize?: number,
+  searchQuery?: string,
+  filter?: string
+): Promise<(Question & { tags: Tag[]; author: User })[]> {
+  await connectToDb();
+
+  const questions = await QuestionModel.find<
+    Question & { tags: Tag[]; author: User }
+  >({})
+    .populate({ path: "tags", model: TagModel })
+    .populate({ path: "author", model: UserModel });
+
+  return questions;
+}
 
 export async function createQuestion(params: {
   title: string;
@@ -60,8 +77,8 @@ export async function createQuestion(params: {
 
     revalidatePath(path);
   } catch (error) {
-    console.log(error);
     await session.abortTransaction();
+    console.log(error);
     throw error;
   }
 }

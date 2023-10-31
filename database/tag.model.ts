@@ -1,6 +1,7 @@
 import { Schema, model, models, Document } from "mongoose";
 
 export interface Tag extends Document {
+  _id: string;
   name: string;
   description: string;
   questions: Schema.Types.ObjectId[];
@@ -16,6 +17,6 @@ const TagSchema = new Schema({
   createdOn: { type: Date, default: Date.now }
 });
 
-const TagModel = models.Tag<Tag> || model<Tag>("Tag", TagSchema);
+const TagModel = models.Tag || model<Tag>("Tag", TagSchema);
 
 export default TagModel;
