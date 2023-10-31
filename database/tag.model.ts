@@ -1,11 +1,13 @@
 import { Schema, model, models, Document } from "mongoose";
+import { Question } from "./question.model";
+import { User } from "./user.model";
 
 export interface Tag extends Document {
   _id: string;
   name: string;
   description: string;
-  questions: Schema.Types.ObjectId[];
-  followers: Schema.Types.ObjectId[];
+  questions: Question[];
+  followers: User[];
   createdOn: Date;
 }
 

@@ -1,15 +1,18 @@
 import { Schema, model, Document, models } from "mongoose";
+import { Tag } from "./tag.model";
+import { User } from "./user.model";
+import { Answer } from "./answer.model";
 
 export interface Question extends Document {
   _id: string;
   title: string;
   explanation: string;
-  tags: Schema.Types.ObjectId[];
+  tags: Tag[];
   views: number;
-  upvotes: Schema.Types.ObjectId[];
-  downvotes: Schema.Types.ObjectId[];
-  author: Schema.Types.ObjectId;
-  answers: Schema.Types.ObjectId[];
+  upvotes: any[];
+  downvotes: any[];
+  author: User;
+  answers: Answer[];
   createdAt: Date;
 }
 

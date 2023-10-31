@@ -22,7 +22,7 @@ export async function getQuestions(
     .populate({ path: "tags", model: TagModel })
     .populate({ path: "author", model: UserModel });
 
-  return questions;
+  return questions as (Question & { tags: Tag[]; author: User })[];
 }
 
 export async function createQuestion(params: {

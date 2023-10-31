@@ -1,11 +1,15 @@
 import { Schema, model, models, Document } from "mongoose";
+import { User } from "./user.model";
+import { Question } from "./question.model";
+import { Answer } from "./answer.model";
+import { Tag } from "./tag.model";
 
 export interface Interaction extends Document {
-  user: Schema.Types.ObjectId; // refence to user
+  user: User; // refence to user
   action: string;
-  question: Schema.Types.ObjectId; // reference to question
-  answer: Schema.Types.ObjectId; // reference to answer
-  tags: Schema.Types.ObjectId[]; // reference to tag
+  question: Question; // reference to question
+  answer: Answer; // reference to answer
+  tags: Tag[]; // reference to tag
   createdAt: Date;
 }
 

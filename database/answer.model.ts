@@ -1,12 +1,14 @@
 import { Schema, models, model, Document } from "mongoose";
+import { User } from "./user.model";
+import { Question } from "./question.model";
 
 export interface Answer extends Document {
   _id: string;
-  author: Schema.Types.ObjectId;
-  question: Schema.Types.ObjectId;
+  author: User;
+  question: Question;
   content: string;
-  upvotes: Schema.Types.ObjectId[];
-  downvotes: Schema.Types.ObjectId[];
+  upvotes: any[];
+  downvotes: any[];
   createdAt: Date;
 }
 

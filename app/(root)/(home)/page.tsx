@@ -8,8 +8,6 @@ import QuestionCard from "@/components/card/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
 import { auth } from "@clerk/nextjs";
 import { getQuestions } from "@/lib/actions/question.action";
-import { Tag } from "@/database/tag.model";
-import { User } from "@/database/user.model";
 
 const Home = async (): Promise<ReactElement> => {
   const { userId } = auth();
@@ -39,12 +37,12 @@ const Home = async (): Promise<ReactElement> => {
               key={question._id}
               _id={question._id}
               title={question.title}
-              tags={question.tags as Tag[]}
-              author={question.author as User}
-              upvotes={question.upvotes as any}
-              views={question.views as any}
-              answers={question.answers as any}
-              createdAt={question.createdAt as any}
+              tags={question.tags}
+              author={question.author}
+              upvotes={question.upvotes}
+              views={question.views}
+              answers={question.answers}
+              createdAt={question.createdAt}
               clerkId={userId}
             />
           ))

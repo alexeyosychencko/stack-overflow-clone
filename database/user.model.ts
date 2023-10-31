@@ -12,7 +12,7 @@ export interface User extends Document {
   location?: string;
   portfolioWebsite?: string;
   reputation?: number;
-  saved: Schema.Types.ObjectId[];
+  saved: any[];
   joinedAt: Date;
 }
 
