@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-let db: mongoose.Connection;
+// eslint-disable-next-line no-var
+var db: mongoose.Connection;
 
 export const connectToDb = async (): Promise<mongoose.Connection> => {
   mongoose.set("strictQuery", true);

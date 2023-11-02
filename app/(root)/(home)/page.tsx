@@ -7,12 +7,13 @@ import { ReactElement } from "react";
 import QuestionCard from "@/components/card/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
 import { auth } from "@clerk/nextjs";
-import { getQuestions } from "@/lib/actions/question.action";
+import { getQuestions } from "@/database/actions/question.action";
 
 const Home = async (): Promise<ReactElement> => {
   const { userId } = auth();
 
-  const questions = await getQuestions();
+  // const questions = await getQuestions();
+  const questions = [];
 
   return (
     <>

@@ -20,7 +20,7 @@ import { useTheme } from "next-themes";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { createQuestion } from "@/lib/actions/question.action";
+import { createQuestion } from "@/database/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
 
 interface Props {

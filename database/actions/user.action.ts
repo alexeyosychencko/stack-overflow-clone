@@ -1,9 +1,9 @@
 "use server";
 
-import UserModel, { User } from "@/database/user.model";
+import UserModel, { User } from "@/database/models/user.model";
 import { connectToDb } from "../mongoose";
 import { revalidatePath } from "next/cache";
-import QuestionModel from "@/database/question.model";
+import QuestionModel from "@/database/models/question.model";
 
 export async function getUserById(clerkId: string): Promise<User | null> {
   try {

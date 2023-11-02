@@ -2,11 +2,11 @@
 
 import { connectToDb } from "../mongoose";
 // import UserModel from "@/database/user.model";
-import QuestionModel, { Question } from "@/database/question.model";
-import TagModel, { Tag } from "@/database/tag.model";
+import QuestionModel, { Question } from "@/database/models/question.model";
+import TagModel, { Tag } from "@/database/models/tag.model";
 import { revalidatePath } from "next/cache";
-import InteractionModel from "@/database/interaction.model";
-import UserModel, { User } from "@/database/user.model";
+import InteractionModel from "@/database/models/interaction.model";
+import UserModel, { User } from "@/database/models/user.model";
 
 export async function getQuestions(
   page?: number,
