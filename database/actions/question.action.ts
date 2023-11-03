@@ -1,12 +1,12 @@
 "use server";
 
-import { connectToDb } from "../mongoose";
-// import UserModel from "@/database/user.model";
-import QuestionModel, { Question } from "@/database/models/question.model";
-import TagModel, { Tag } from "@/database/models/tag.model";
+import connectToDb from "../mongoose";
+import { QuestionModel, Question } from "@/database/models/question.model";
+import { TagModel, Tag } from "@/database/models/tag.model";
 import { revalidatePath } from "next/cache";
-import InteractionModel from "@/database/models/interaction.model";
-import UserModel, { User } from "@/database/models/user.model";
+import { InteractionModel } from "@/database/models/interaction.model";
+import { UserModel, User } from "@/database/models/user.model";
+import { AnswerModel } from "../models/answer.model";
 
 export async function getQuestions(
   page?: number,
@@ -18,11 +18,12 @@ export async function getQuestions(
 
   const questions = await QuestionModel.find<
     Question & { tags: Tag[]; author: User }
-  >({})
+  >()
     .populate({ path: "tags", model: TagModel })
-    .populate({ path: "author", model: UserModel });
+    .populate({ path: "author", model: UserModel })
+    .populate({ path: "answers", model: AnswerModel });
 
-  return questions as (Question & { tags: Tag[]; author: User })[];
+  return questions;
 }
 
 export async function createQuestion(params: {

@@ -1,34 +1,67 @@
-import { Schema, model, Document, models } from "mongoose";
+import mongoose from "mongoose";
 import { Tag } from "./tag.model";
 import { User } from "./user.model";
 import { Answer } from "./answer.model";
+import * as typegoose from "@typegoose/typegoose";
 
-export interface Question extends Document {
-  _id: string;
-  title: string;
-  explanation: string;
-  tags: Tag[];
-  views: number;
-  upvotes: any[];
-  downvotes: any[];
-  author: User;
-  answers: Answer[];
-  createdAt: Date;
+@typegoose.post("save", function (doc) {
+  if (doc) {
+    doc.id = doc._id.toString();
+    doc._id = doc.id;
+  }
+})
+@typegoose.post(/^find/, function (docs) {
+  // @ts-ignore
+  if (this.op === "find") {
+    docs.forEach((doc: any) => {
+      doc.id = doc._id.toString();
+      doc._id = doc.id;
+    });
+  }
+})
+@typegoose.ModelOptions({
+  schemaOptions: {
+    timestamps: true,
+    collection: "questions"
+  },
+  options: {
+    allowMixed: typegoose.Severity.ALLOW
+  }
+})
+class Question {
+  _id: mongoose.Types.ObjectId | string;
+
+  id: string;
+
+  @typegoose.prop({ required: true })
+  public title: string;
+
+  @typegoose.prop({ required: true })
+  public explanation: string;
+
+  @typegoose.prop({ ref: "Tag" })
+  public tags: typegoose.Ref<Tag>[];
+
+  @typegoose.prop({ required: true, default: 0 })
+  public views: number;
+
+  @typegoose.prop({ default: [] })
+  public upvotes: string[];
+
+  @typegoose.prop({ default: [] })
+  public downvotes: string[];
+
+  @typegoose.prop({ ref: "User" })
+  public author: typegoose.Ref<User>;
+
+  @typegoose.prop({ ref: "Answer" })
+  public answers: typegoose.Ref<Answer>[];
+
+  @typegoose.prop({ required: true, default: Date.now })
+  public createdAt: Date;
 }
 
-const questionSchema = new Schema<Question>({
-  title: { type: String, required: true },
-  explanation: { type: String, required: true },
-  tags: { type: [Schema.Types.ObjectId], ref: "Tag" },
-  views: { type: Number, default: 0 },
-  upvotes: { type: [Schema.Types.ObjectId], ref: "User", default: [] },
-  downvotes: { type: [Schema.Types.ObjectId], ref: "User", default: [] },
-  author: { type: Schema.Types.ObjectId, ref: "User" },
-  answers: { type: [Schema.Types.ObjectId], ref: "Answer" },
-  createdAt: { type: Date, default: Date.now }
-});
-
 const QuestionModel =
-  models.Question || model<Question>("Question", questionSchema);
+  typegoose.mongoose.models.Question || typegoose.getModelForClass(Question);
 
-export default QuestionModel;
+export { QuestionModel, Question };

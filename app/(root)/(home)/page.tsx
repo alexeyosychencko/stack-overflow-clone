@@ -12,8 +12,7 @@ import { getQuestions } from "@/database/actions/question.action";
 const Home = async (): Promise<ReactElement> => {
   const { userId } = auth();
 
-  // const questions = await getQuestions();
-  const questions = [];
+  const questions = await getQuestions();
 
   return (
     <>
@@ -35,14 +34,14 @@ const Home = async (): Promise<ReactElement> => {
         {questions.length ? (
           questions.map((question) => (
             <QuestionCard
-              key={question._id}
-              _id={question._id}
+              key={question.id}
+              id={question.id}
               title={question.title}
               tags={question.tags}
               author={question.author}
-              upvotes={question.upvotes}
-              views={question.views}
-              answers={question.answers}
+              upvotesLength={question.upvotes.length}
+              viewsLength={question.views}
+              answersLength={question.answers.length}
               createdAt={question.createdAt}
               clerkId={userId}
             />

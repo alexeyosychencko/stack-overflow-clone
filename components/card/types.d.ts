@@ -1,19 +1,19 @@
 export interface QuestionProps {
-  _id: string;
+  id: string;
   title: string;
   tags: {
-    _id: string;
+    id: string;
     name: string;
   }[];
   author: {
-    _id: string;
+    id: string;
     name: string;
     picture: string;
     clerkId: string;
   };
-  upvotes?: string[];
-  views?: number;
-  answers?: Array<object>;
+  upvotesLength: number;
+  viewsLength: number;
+  answersLength: number;
   createdAt: Date;
   clerkId?: string | null;
 }

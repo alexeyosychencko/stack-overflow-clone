@@ -11,17 +11,17 @@ const Page = async (): Promise<ReactElement> => {
     return redirect("/sign-in");
   }
 
-  const mongoUser = await getUserById(userId);
+  // const mongoUser = await getUserById(userId);
 
-  if (!mongoUser) {
-    return redirect("/sign-in");
-  }
+  // if (!mongoUser) {
+  //   return redirect("/sign-in");
+  // }
 
   return (
     <div>
       <h1 className="h1-bold text-dark100_light900">Ask a question</h1>
       <div className="mt-9">
-        <Question mongoUserId={mongoUser._id} />
+        <Question mongoUserId={userId} />
       </div>
     </div>
   );
