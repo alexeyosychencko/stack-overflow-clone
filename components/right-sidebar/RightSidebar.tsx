@@ -37,7 +37,7 @@ const RightSidebar = (): ReactElement => {
           {mockPopularTags.map((tag) => (
             <li key={tag._id}>
               <RenderTag
-                _id={tag._id}
+                id={tag._id}
                 name={tag.name}
                 totalQuestions={tag.numberOfQuestions}
                 showCount
