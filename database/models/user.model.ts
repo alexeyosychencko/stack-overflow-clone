@@ -33,7 +33,7 @@ import { Question } from "./question.model";
   }
 })
 class User {
-  _id: mongoose.Types.ObjectId | string;
+  public _id: mongoose.Types.ObjectId | string;
 
   public id: string;
 
