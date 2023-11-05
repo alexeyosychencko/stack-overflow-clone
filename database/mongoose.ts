@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 // eslint-disable-next-line no-var
 var db: mongoose.Connection;
 
-export const connectToDb = async (): Promise<mongoose.Connection> => {
+const connectToDb = async (): Promise<mongoose.Connection> => {
   mongoose.set("strictQuery", true);
 
   if (!process.env.MONGODB_URI) {
@@ -27,6 +27,8 @@ export const connectToDb = async (): Promise<mongoose.Connection> => {
     throw new Error(`=> error connecting to database, ${err}`);
   }
 };
+
+export default connectToDb;
 
 // import _mongoose, { connect } from "mongoose";
 
