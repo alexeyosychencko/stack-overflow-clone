@@ -63,7 +63,6 @@ async function connectToDb() {
 
   if (!cached.promise) {
     const opts = {
-      bufferCommands: false,
       dbName: "CodeFlow"
     };
 
