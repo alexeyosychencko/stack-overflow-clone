@@ -49,7 +49,7 @@ class User {
   @prop({ required: true, unique: true })
   public email: string;
 
-  @prop({ required: true })
+  @prop()
   public password: string;
 
   @prop()
