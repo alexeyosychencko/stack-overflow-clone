@@ -4,6 +4,18 @@ const nextConfig = {
     serverActions: true,
     esmExternals: "loose",
     serverComponentsExternalPackages: ["mongoose"]
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*"
+      },
+      {
+        protocol: "http",
+        hostname: "*"
+      }
+    ]
   }
 };
 

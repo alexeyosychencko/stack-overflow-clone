@@ -1,5 +1,5 @@
 import Question from "@/components/form/Question";
-// import { getUserById } from "@/database/actions/user.action";
+import { getUserById } from "@/database/actions/user.action";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { ReactElement } from "react";
@@ -11,17 +11,17 @@ const Page = async (): Promise<ReactElement> => {
     return redirect("/sign-in");
   }
 
-  // const mongoUser = await getUserById(userId);
+  const mongoUser = await getUserById(userId);
 
-  // if (!mongoUser) {
-  //   return redirect("/sign-in");
-  // }
+  if (!mongoUser) {
+    return redirect("/sign-in");
+  }
 
   return (
     <div>
       <h1 className="h1-bold text-dark100_light900">Ask a question</h1>
       <div className="mt-9">
-        <Question mongoUserId={userId} />
+        <Question mongoUserId={mongoUser.id} />
       </div>
     </div>
   );
