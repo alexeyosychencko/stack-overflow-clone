@@ -26,7 +26,8 @@ import { Question } from "./question.model";
 })
 @ModelOptions({
   schemaOptions: {
-    timestamps: true
+    timestamps: true,
+    collection: "users"
   },
   options: {
     allowMixed: Severity.ALLOW

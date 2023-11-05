@@ -21,7 +21,8 @@ import { Severity } from "@typegoose/typegoose";
 })
 @typegoose.ModelOptions({
   schemaOptions: {
-    timestamps: true
+    timestamps: true,
+    collection: "tags"
   },
   options: {
     allowMixed: Severity.ALLOW
