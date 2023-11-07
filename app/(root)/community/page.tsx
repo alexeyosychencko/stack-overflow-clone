@@ -6,23 +6,29 @@ import { getAllUsers } from "@/database/actions/user.action";
 import Link from "next/link";
 import { ReactElement } from "react";
 
-const Page = async (): Promise<ReactElement> => {
-  const users = await getAllUsers();
+const Page = async ({
+  searchParams
+}: {
+  searchParams: { [key: string]: string | undefined };
+}): Promise<ReactElement> => {
+  const result = await getAllUsers({
+    searchQuery: searchParams.search
+  });
 
   return (
     <>
       <h1 className="h1-bold text-dark100_light900 w-full text-left">
-        All Questions
+        All Users
       </h1>
 
       <div className="flex justify-between gap-5 pt-11 max-sm:flex-col">
-        <LocalSearch route="/" placeholder="Search by username..." />
+        <LocalSearch route="/community" placeholder="Search by username..." />
         <Filter filters={UserFilters} />
       </div>
 
       <section className="flex flex-wrap gap-4 pt-12">
-        {users.length ? (
-          users.map((user) => <UserCard key={user.id} user={user} />)
+        {result.users.length ? (
+          result.users.map((user) => <UserCard key={user.id} user={user} />)
         ) : (
           <div className="paragraph-regular text-dark200_light800 mx-auto max-w-4xl text-center">
             <p>No users yet</p>

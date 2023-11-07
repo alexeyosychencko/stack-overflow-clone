@@ -4,6 +4,8 @@ import { UserModel, User } from "@/database/models/user.model";
 import connectToDb from "../mongoose";
 import { revalidatePath } from "next/cache";
 import { QuestionModel } from "@/database/models/question.model";
+import { FilterQuery } from "mongoose";
+import { UserFiltersValues } from "@/components/shared/filter/consts";
 
 export async function getUserById(clerkId: string): Promise<User | null> {
   try {
@@ -16,11 +18,60 @@ export async function getUserById(clerkId: string): Promise<User | null> {
   }
 }
 
-export async function getAllUsers(): Promise<User[]> {
+export async function getAllUsers({
+  searchQuery,
+  filter,
+  page = 1,
+  pageSize = 10
+}: {
+  searchQuery?: string;
+  filter?: string;
+  page?: number;
+  pageSize?: number;
+}): Promise<{
+  users: User[];
+  isNext: boolean;
+}> {
   try {
     connectToDb();
 
-    return UserModel.find();
+    const skipAmount = (page - 1) * pageSize;
+
+    const query: FilterQuery<typeof User> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        { name: { $regex: new RegExp(searchQuery, "i") } },
+        { username: { $regex: new RegExp(searchQuery, "i") } }
+      ];
+    }
+
+    let sortOptions = {};
+
+    switch (filter) {
+      case UserFiltersValues.NewUsers:
+        sortOptions = { joinedAt: -1 };
+        break;
+      case UserFiltersValues.OldUsers:
+        sortOptions = { joinedAt: 1 };
+        break;
+      case UserFiltersValues.TopContributors:
+        sortOptions = { reputation: -1 };
+        break;
+
+      default:
+        break;
+    }
+
+    const users = await UserModel.find(query)
+      .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize);
+
+    const totalUsers = await UserModel.countDocuments(query);
+    const isNext = totalUsers > skipAmount + users.length;
+
+    return { users, isNext };
   } catch (error) {
     console.log(error);
     throw error;

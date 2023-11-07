@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export const AnswerFilters = [
   { name: "Highest Upvotes", value: "highestUpvotes" },
   { name: "Lowest Upvotes", value: "lowestUpvotes" },
@@ -5,10 +6,16 @@ export const AnswerFilters = [
   { name: "Oldest", value: "old" }
 ];
 
+export enum UserFiltersValues {
+  NewUsers = "new_users",
+  OldUsers = "old_users",
+  TopContributors = "top_contributors"
+}
+
 export const UserFilters = [
-  { name: "New Users", value: "new_users" },
-  { name: "Old Users", value: "old_users" },
-  { name: "Top Contributors", value: "top_contributors" }
+  { name: "New Users", value: UserFiltersValues.NewUsers },
+  { name: "Old Users", value: UserFiltersValues.OldUsers },
+  { name: "Top Contributors", value: UserFiltersValues.TopContributors }
 ];
 
 export const QuestionFilters = [
