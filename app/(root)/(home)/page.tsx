@@ -9,10 +9,16 @@ import NoResult from "@/components/shared/NoResult";
 import { auth } from "@clerk/nextjs";
 import { getQuestions } from "@/database/actions/question.action";
 
-const Home = async (): Promise<ReactElement> => {
+const Home = async ({
+  searchParams
+}: {
+  searchParams: { [key: string]: string | undefined };
+}): Promise<ReactElement> => {
   const { userId } = auth();
 
-  const questions = await getQuestions();
+  const result = await getQuestions({
+    searchQuery: searchParams.search
+  });
 
   return (
     <>
@@ -31,8 +37,8 @@ const Home = async (): Promise<ReactElement> => {
       </div>
 
       <div className="flex w-full flex-col gap-6 pt-11">
-        {questions.length ? (
-          questions.map((question) => (
+        {result.questions.length ? (
+          result.questions.map((question) => (
             <QuestionCard
               key={question.id}
               id={question.id}

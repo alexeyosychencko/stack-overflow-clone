@@ -6,24 +6,72 @@ import { TagModel, Tag } from "@/database/models/tag.model";
 import { revalidatePath } from "next/cache";
 import { InteractionModel } from "@/database/models/interaction.model";
 import { UserModel, User } from "@/database/models/user.model";
-import { AnswerModel } from "../models/answer.model";
+import { Answer, AnswerModel } from "../models/answer.model";
+import { FilterQuery } from "mongoose";
 
-export async function getQuestions(
-  page?: number,
-  pageSize?: number,
-  searchQuery?: string,
-  filter?: string
-): Promise<(Question & { tags: Tag[]; author: User })[]> {
-  await connectToDb();
+export async function getQuestions({
+  searchQuery,
+  filter,
+  page = 1,
+  pageSize = 10
+}: {
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
+  filter?: string;
+}): Promise<{
+  questions: (Question & { tags: Tag[]; author: User; answers: Answer[] })[];
+  isNext: boolean;
+}> {
+  try {
+    await connectToDb();
 
-  const questions = await QuestionModel.find<
-    Question & { tags: Tag[]; author: User }
-  >()
-    .populate({ path: "tags", model: TagModel })
-    .populate({ path: "author", model: UserModel })
-    .populate({ path: "answers", model: AnswerModel });
+    const skipAmount = (page - 1) * pageSize;
 
-  return questions;
+    const query: FilterQuery<typeof Question> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        { title: { $regex: new RegExp(searchQuery, "i") } },
+        { content: { $regex: new RegExp(searchQuery, "i") } }
+      ];
+    }
+
+    let sortOptions = {};
+
+    switch (filter) {
+      case "newest":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "frequent":
+        sortOptions = { views: -1 };
+        break;
+      case "unanswered":
+        query.answers = { $size: 0 };
+        break;
+      default:
+        break;
+    }
+
+    const questions = await QuestionModel.find<
+      Question & { tags: Tag[]; author: User; answers: Answer[] }
+    >(query)
+      .populate({ path: "tags", model: TagModel })
+      .populate({ path: "author", model: UserModel })
+      .populate({ path: "answers", model: AnswerModel })
+      .skip(skipAmount)
+      .limit(pageSize)
+      .sort(sortOptions);
+
+    const totalQuestions = await QuestionModel.countDocuments(query);
+
+    const isNext = totalQuestions > skipAmount + questions.length;
+
+    return { questions, isNext };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 export async function createQuestion(params: {
