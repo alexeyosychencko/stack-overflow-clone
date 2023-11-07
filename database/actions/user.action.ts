@@ -16,6 +16,17 @@ export async function getUserById(clerkId: string): Promise<User | null> {
   }
 }
 
+export async function getAllUsers(): Promise<User[]> {
+  try {
+    connectToDb();
+
+    return UserModel.find();
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export async function createUser(data: {
   clerkId: string;
   name: string;

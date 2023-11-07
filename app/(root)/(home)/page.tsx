@@ -25,12 +25,12 @@ const Home = async (): Promise<ReactElement> => {
         </Link>
       </div>
 
-      <div className="mt-11 flex justify-between gap-5 max-sm:flex-col">
+      <div className="flex justify-between gap-5 pt-11 max-sm:flex-col">
         <LocalSearch route="/" placeholder="Search for questions" />
         <Filter filters={HomePageFilters} />
       </div>
 
-      <div className="mt-11 flex w-full flex-col gap-6">
+      <div className="flex w-full flex-col gap-6 pt-11">
         {questions.length ? (
           questions.map((question) => (
             <QuestionCard
