@@ -1,6 +1,6 @@
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import Filter from "@/components/shared/filter/Filter";
-import { HomePageFilters } from "@/components/shared/filter/consts";
+import { QuestionFilters } from "@/components/shared/filter/consts";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ReactElement } from "react";
@@ -17,7 +17,8 @@ const Home = async ({
   const { userId } = auth();
 
   const result = await getQuestions({
-    searchQuery: searchParams.search
+    searchQuery: searchParams.search,
+    filter: searchParams.filter
   });
 
   return (
@@ -33,7 +34,7 @@ const Home = async ({
 
       <div className="flex justify-between gap-5 pt-11 max-sm:flex-col">
         <LocalSearch route="/" placeholder="Search for questions" />
-        <Filter filters={HomePageFilters} />
+        <Filter filters={QuestionFilters} />
       </div>
 
       <div className="flex w-full flex-col gap-6 pt-11">

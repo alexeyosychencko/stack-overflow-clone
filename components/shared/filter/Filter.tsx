@@ -9,6 +9,8 @@ import {
   SelectTrigger,
   SelectValue
 } from "../../ui/select";
+import { useRouter, useSearchParams } from "next/navigation";
+import { formUrlQuery } from "@/lib/utils";
 
 const Filter = ({
   filters
@@ -18,9 +20,27 @@ const Filter = ({
     value: string;
   }[];
 }): React.ReactElement => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const paramFilter = searchParams.get("filter");
+
+  const handleUpdateParams = (value: string) => {
+    const newUrl = formUrlQuery({
+      params: searchParams.toString(),
+      key: "filter",
+      value
+    });
+
+    router.push(newUrl, { scroll: false });
+  };
+
   return (
     <div className="relative min-h-[48px] sm:min-w-[170px]">
-      <Select>
+      <Select
+        onValueChange={handleUpdateParams}
+        defaultValue={paramFilter || undefined}
+      >
         <SelectTrigger
           className={`body-regular light-border background-light800_dark300 text-dark500_light700 no-focus h-full border px-5 py-2.5`}
         >

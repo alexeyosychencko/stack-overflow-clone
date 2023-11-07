@@ -12,7 +12,8 @@ const Page = async ({
   searchParams: { [key: string]: string | undefined };
 }): Promise<ReactElement> => {
   const result = await getAllUsers({
-    searchQuery: searchParams.search
+    searchQuery: searchParams.search,
+    filter: searchParams.filter
   });
 
   return (

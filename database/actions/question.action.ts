@@ -8,6 +8,7 @@ import { InteractionModel } from "@/database/models/interaction.model";
 import { UserModel, User } from "@/database/models/user.model";
 import { Answer, AnswerModel } from "../models/answer.model";
 import { FilterQuery } from "mongoose";
+import { QuestionFiltersValues } from "@/components/shared/filter/consts";
 
 export async function getQuestions({
   searchQuery,
@@ -40,16 +41,20 @@ export async function getQuestions({
     let sortOptions = {};
 
     switch (filter) {
-      case "newest":
+      case QuestionFiltersValues.Newest:
         sortOptions = { createdAt: -1 };
         break;
-      case "frequent":
+      case QuestionFiltersValues.MostViewed:
         sortOptions = { views: -1 };
         break;
-      case "unanswered":
+      case QuestionFiltersValues.MostAnswered:
         query.answers = { $size: 0 };
         break;
+      case QuestionFiltersValues.Oldest:
+        sortOptions = { createdAt: 1 };
+        break;
       default:
+        sortOptions = { createdAt: -1 };
         break;
     }
 

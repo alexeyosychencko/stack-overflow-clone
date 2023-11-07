@@ -18,12 +18,20 @@ export const UserFilters = [
   { name: "Top Contributors", value: UserFiltersValues.TopContributors }
 ];
 
+export enum QuestionFiltersValues {
+  Newest = "newest",
+  Oldest = "oldest",
+  MostVoted = "most_voted",
+  MostViewed = "most_viewed",
+  MostAnswered = "most_answered"
+}
+
 export const QuestionFilters = [
-  { name: "Most Recent", value: "most_recent" },
-  { name: "Oldest", value: "oldest" },
-  { name: "Most Voted", value: "most_voted" },
-  { name: "Most Viewed", value: "most_viewed" },
-  { name: "Most Answered", value: "most_answered" }
+  { name: "Newest", value: QuestionFiltersValues.Newest },
+  { name: "Oldest", value: QuestionFiltersValues.Oldest },
+  // { name: "Most Voted", value: QuestionFiltersValues.MostVoted },
+  { name: "Most Viewed", value: QuestionFiltersValues.MostViewed },
+  { name: "Most Answered", value: QuestionFiltersValues.MostAnswered }
 ];
 
 export const TagFilters = [
