@@ -10,6 +10,24 @@ import { Answer, AnswerModel } from "../models/answer.model";
 import { FilterQuery } from "mongoose";
 import { QuestionFiltersValues } from "@/components/shared/filter/consts";
 
+export async function getQuestionById(
+  id: string
+): Promise<Question & { tags: Tag[]; author: User; answers: Answer[] }> {
+  try {
+    await connectToDb();
+
+    const question = await QuestionModel.findById(id)
+      .populate({ path: "tags", model: TagModel })
+      .populate({ path: "author", model: UserModel })
+      .populate({ path: "answers", model: AnswerModel });
+
+    return question;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export async function getQuestions({
   searchQuery,
   filter,
