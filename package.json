@@ -21,6 +21,7 @@
     "@typegoose/typegoose": "^11.6.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "html-react-parser": "^5.0.6",
     "lucide-react": "^0.287.0",
     "mongodb": "4.0",
     "mongoose": "^7.6.3",

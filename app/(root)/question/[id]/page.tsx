@@ -5,6 +5,7 @@ import Link from "next/link";
 import Metric from "@/components/shared/Metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import RenderTag from "@/components/shared/RenderTag";
+import parse from "html-react-parser";
 
 const Page = async ({
   params
@@ -34,12 +35,12 @@ const Page = async ({
           </Link>
           <div className="flex justify-end">Votes</div>
         </div>
-        <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
+        <h2 className="h2-semibold text-dark200_light900 w-full pt-3.5 text-left">
           {question.title}
         </h2>
       </div>
 
-      <div className="mb-8 mt-5 flex flex-wrap gap-4">
+      <div className="mb-8 flex flex-wrap gap-4 pt-5">
         <Metric
           imgUrl="/assets/icons/clock.svg"
           alt="clock icon"
@@ -60,9 +61,11 @@ const Page = async ({
         />
       </div>
 
-      {/* <ParseHTML data={result.content} /> */}
+      <div className="markdown w-full min-w-full">
+        {parse(question.explanation)}
+      </div>
 
-      <div className="mt-8 flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 pt-5">
         {question.tags.map((tag: any) => (
           <RenderTag
             key={tag.id}
