@@ -29,7 +29,7 @@ interface Props {
   questionDetails?: string;
 }
 
-const Question = ({
+const QuestionForm = ({
   type,
   mongoUserId,
   questionDetails
@@ -278,4 +278,4 @@ const Question = ({
   );
 };
 
-export default Question;
+export default QuestionForm;
