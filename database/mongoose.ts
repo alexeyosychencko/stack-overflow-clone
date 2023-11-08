@@ -1,35 +1,3 @@
-// import mongoose from "mongoose";
-
-// eslint-disable-next-line no-var
-// var db: mongoose.Connection;
-
-// const connectToDb = async (): Promise<mongoose.Connection> => {
-//   mongoose.set("strictQuery", true);
-
-//   if (!process.env.MONGODB_URI) {
-//     throw new Error("MONGODB_URI not found");
-//   }
-
-//   if (db) {
-//     console.log("=> using existing database connection");
-//     return db;
-//   }
-
-//   try {
-//     db = await mongoose
-//       .createConnection(process.env.MONGODB_URI, {
-//         dbName: "CodeFlow"
-//       })
-//       .asPromise();
-//     console.log("=> using new database connection");
-//     return db;
-//   } catch (err) {
-//     throw new Error(`=> error connecting to database, ${err}`);
-//   }
-// };
-
-// export default connectToDb;
-
 import _mongoose, { connect } from "mongoose";
 
 declare global {
@@ -90,3 +58,35 @@ async function connectToDb() {
 }
 
 export default connectToDb;
+
+// import mongoose from "mongoose";
+
+// eslint-disable-next-line no-var
+// var db: mongoose.Connection;
+
+// const connectToDb = async (): Promise<mongoose.Connection> => {
+//   mongoose.set("strictQuery", true);
+
+//   if (!process.env.MONGODB_URI) {
+//     throw new Error("MONGODB_URI not found");
+//   }
+
+//   if (db) {
+//     console.log("=> using existing database connection");
+//     return db;
+//   }
+
+//   try {
+//     db = await mongoose
+//       .createConnection(process.env.MONGODB_URI, {
+//         dbName: "CodeFlow"
+//       })
+//       .asPromise();
+//     console.log("=> using new database connection");
+//     return db;
+//   } catch (err) {
+//     throw new Error(`=> error connecting to database, ${err}`);
+//   }
+// };
+
+// export default connectToDb;

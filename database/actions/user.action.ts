@@ -9,7 +9,7 @@ import { UserFiltersValues } from "@/components/shared/filter/consts";
 
 export async function getUserById(clerkId: string): Promise<User | null> {
   try {
-    connectToDb();
+    await connectToDb();
 
     return UserModel.findOne({ clerkId });
   } catch (error) {
@@ -33,7 +33,7 @@ export async function getAllUsers({
   isNext: boolean;
 }> {
   try {
-    connectToDb();
+    await connectToDb();
 
     const skipAmount = (page - 1) * pageSize;
 
@@ -86,7 +86,7 @@ export async function createUser(data: {
   picture: string;
 }): Promise<User> {
   try {
-    connectToDb();
+    await connectToDb();
 
     const newUser = await UserModel.create(data);
 
@@ -103,7 +103,7 @@ export async function updateUser(data: {
   path: string;
 }): Promise<void> {
   try {
-    connectToDb();
+    await connectToDb();
 
     const { clerkId, updateData, path } = data;
 

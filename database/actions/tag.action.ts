@@ -5,7 +5,7 @@ import connectToDb from "../mongoose";
 
 export async function getTagsByUserId(userId: string) {
   try {
-    connectToDb();
+    await connectToDb();
 
     const tags = await TagModel.find(
       { followers: userId },

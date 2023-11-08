@@ -1,17 +1,23 @@
 import { getQuestionById } from "@/database/actions/question.action";
-import { ReactElement } from "react";
+import { ReactElement, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Metric from "@/components/shared/Metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import RenderTag from "@/components/shared/RenderTag";
 import parse from "html-react-parser";
+import AnswerForm from "@/components/form/AnswerForm";
+import { auth } from "@clerk/nextjs";
+import { getUserById } from "@/database/actions/user.action";
 
 const Page = async ({
   params
 }: {
   params: { [key: string]: string };
 }): Promise<ReactElement> => {
+  const { userId: clerkId } = auth();
+  const mongoUser = clerkId ? await getUserById(clerkId) : null;
+
   const question = await getQuestionById(params.id);
 
   return (
@@ -61,11 +67,11 @@ const Page = async ({
         />
       </div>
 
-      <div className="markdown w-full min-w-full">
+      <div className="markdown mb-4 w-full min-w-full">
         {parse(question.explanation)}
       </div>
 
-      <div className="flex flex-wrap gap-2 pt-5">
+      <div className="flex flex-wrap gap-2">
         {question.tags.map((tag: any) => (
           <RenderTag
             key={tag.id}
@@ -75,6 +81,11 @@ const Page = async ({
           />
         ))}
       </div>
+      {mongoUser?.id && (
+        <Suspense fallback={<div>Loading...</div>}>
+          <AnswerForm questionId={question.id} authorId={mongoUser?.id} />
+        </Suspense>
+      )}
     </>
   );
 };

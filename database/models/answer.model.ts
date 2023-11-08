@@ -30,7 +30,8 @@ import { Severity } from "@typegoose/typegoose";
 })
 class Answer {
   _id: mongoose.Types.ObjectId | string;
-  public id: string;
+
+  id: string;
 
   @typegoose.prop({ required: true, ref: () => User })
   public author: typegoose.Ref<User>;
