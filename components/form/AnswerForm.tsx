@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AnswerSchema } from "./validation";
-import { createAnswerASDF } from "@/database/actions/answer.action";
+import { createAnswer } from "@/database/actions/answer.action";
 import {
   Form,
   FormControl,
@@ -41,7 +41,7 @@ const AnswerForm = ({
     setIsSubmitting(true);
 
     try {
-      await createAnswerASDF({
+      await createAnswer({
         content: values.answer,
         author: authorId,
         question: questionId,

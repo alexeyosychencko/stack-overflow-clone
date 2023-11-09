@@ -9,6 +9,7 @@ import parse from "html-react-parser";
 import AnswerForm from "@/components/form/AnswerForm";
 import { auth } from "@clerk/nextjs";
 import { getUserById } from "@/database/actions/user.action";
+import Answers from "@/components/shared/Answers";
 
 const Page = async ({
   params
@@ -71,7 +72,7 @@ const Page = async ({
         {parse(question.explanation)}
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="mb-12 flex flex-wrap gap-2">
         {question.tags.map((tag: any) => (
           <RenderTag
             key={tag.id}
@@ -81,6 +82,13 @@ const Page = async ({
           />
         ))}
       </div>
+
+      <Answers
+        questionId={question.id}
+        userId={mongoUser?.id}
+        totalAnswers={question.answers.length}
+      />
+
       {mongoUser?.id && (
         <Suspense fallback={<div>Loading...</div>}>
           <AnswerForm questionId={question.id} authorId={mongoUser?.id} />

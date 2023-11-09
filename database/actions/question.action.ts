@@ -6,20 +6,19 @@ import { TagModel, Tag } from "@/database/models/tag.model";
 import { revalidatePath } from "next/cache";
 import { InteractionModel } from "@/database/models/interaction.model";
 import { UserModel, User } from "@/database/models/user.model";
-import { Answer, AnswerModel } from "../models/answer.model";
+import { Answer } from "../models/answer.model";
 import { FilterQuery } from "mongoose";
 import { QuestionFiltersValues } from "@/components/shared/filter/consts";
 
 export async function getQuestionById(
   id: string
-): Promise<Question & { tags: Tag[]; author: User; answers: Answer[] }> {
+): Promise<Question & { tags: Tag[]; author: User }> {
   try {
     await connectToDb();
 
     const question = await QuestionModel.findById(id)
       .populate({ path: "tags", model: TagModel })
-      .populate({ path: "author", model: UserModel })
-      .populate({ path: "answers", model: AnswerModel });
+      .populate({ path: "author", model: UserModel });
 
     return question;
   } catch (error) {
@@ -81,7 +80,6 @@ export async function getQuestions({
     >(query)
       .populate({ path: "tags", model: TagModel })
       .populate({ path: "author", model: UserModel })
-      .populate({ path: "answers", model: AnswerModel })
       .skip(skipAmount)
       .limit(pageSize)
       .sort(sortOptions);

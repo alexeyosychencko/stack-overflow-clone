@@ -2,12 +2,12 @@
 
 import connectToDb from "../mongoose";
 import { QuestionModel } from "../models/question.model";
-import { AnswerModel } from "../models/answer.model";
+import { Answer, AnswerModel } from "../models/answer.model";
 import { InteractionModel } from "../models/interaction.model";
-import { UserModel } from "../models/user.model";
+import { User, UserModel } from "../models/user.model";
 import { revalidatePath } from "next/cache";
 
-export async function createAnswerASDF(params: {
+export async function createAnswer(params: {
   content: string;
   author: string;
   question: string;
@@ -39,5 +39,45 @@ export async function createAnswerASDF(params: {
     session.abortTransaction();
     console.log(error);
     throw error;
+  }
+}
+
+export async function getAnswers(
+  questionId: string,
+  sortBy?: string
+): Promise<(Answer & { author: User })[]> {
+  try {
+    await connectToDb();
+
+    let sortOptions = {};
+
+    switch (sortBy) {
+      case "highestUpvotes":
+        sortOptions = { upvotes: -1 };
+        break;
+      case "lowestUpvotes":
+        sortOptions = { upvotes: 1 };
+        break;
+      case "recent":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "old":
+        sortOptions = { createdAt: 1 };
+        break;
+      default:
+        sortOptions = { createdAt: -1 };
+        break;
+    }
+
+    const answers = AnswerModel.find<Answer & { author: User }>({
+      question: questionId
+    })
+      .populate({ path: "author", model: UserModel })
+      .sort(sortOptions);
+
+    return answers;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 }
