@@ -3,17 +3,20 @@ import Link from "next/link";
 import { ReactElement } from "react";
 import Image from "next/image";
 import parse from "html-react-parser";
+import Votes from "../shared/Votes";
 
 const AnswerCard = ({
   createdAt,
   content,
   clerkId,
+  userId,
   authorPicture,
   authorName
 }: {
   createdAt: Date;
   content: string;
   clerkId: string;
+  userId?: string;
   authorPicture: string;
   authorName: string;
 }): ReactElement => {
@@ -39,18 +42,11 @@ const AnswerCard = ({
             </p>
           </div>
         </Link>
-        Votes
-        {/* <div className="flex justify-end">
-                    <Votes 
-                      type="Answer"
-                      itemId={JSON.stringify(answer._id)}
-                      userId={JSON.stringify(userId)}
-                      upvotes={answer.upvotes.length}
-                      hasupVoted={answer.upvotes.includes(userId)}
-                      downvotes={answer.downvotes.length}
-                      hasdownVoted={answer.downvotes.includes(userId)}
-                    />
-                  </div> */}
+        <div className="flex justify-end">
+          {userId ? (
+            <Votes userId={clerkId} upvotes={[]} downvotes={[]} />
+          ) : null}
+        </div>
       </div>
       <div>{parse(content)}</div>
     </article>

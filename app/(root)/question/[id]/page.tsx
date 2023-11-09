@@ -10,6 +10,7 @@ import AnswerForm from "@/components/form/AnswerForm";
 import { auth } from "@clerk/nextjs";
 import { getUserById } from "@/database/actions/user.action";
 import Answers from "@/components/shared/Answers";
+import Votes from "@/components/shared/Votes";
 
 const Page = async ({
   params,
@@ -42,7 +43,18 @@ const Page = async ({
               {question.author.name}
             </p>
           </Link>
-          <div className="flex justify-end">Votes</div>
+          <div className="flex justify-end">
+            {mongoUser?.id ? (
+              <Votes
+                userId={mongoUser?.id}
+                upvotes={question.upvotes}
+                downvotes={question.downvotes}
+                withSaved={true}
+                // hasSaved={question.savedBy.includes(mongoUser?.id)}
+                // upvoteHandler={async () => {
+              />
+            ) : null}
+          </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 w-full pt-3.5 text-left">
           {question.title}

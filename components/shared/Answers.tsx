@@ -34,6 +34,7 @@ export const Answers = async ({
             createdAt={answer.createdAt}
             content={answer.content}
             clerkId={answer.author.clerkId}
+            userId={userId}
             authorPicture={answer.author.picture}
             authorName={answer.author.name}
           />
