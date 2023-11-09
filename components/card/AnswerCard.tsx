@@ -18,7 +18,7 @@ const AnswerCard = ({
   authorName: string;
 }): ReactElement => {
   return (
-    <article className="light-border border-b py-10 ">
+    <article className="card-wrapper light-border border-b p-5 ">
       <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
         <Link
           href={`/profile/${clerkId}`}

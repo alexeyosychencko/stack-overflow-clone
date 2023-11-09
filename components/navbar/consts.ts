@@ -4,7 +4,7 @@ export const navbarLinks: NavbarLink[] = [
   {
     imgURL: "/assets/icons/home.svg",
     route: "/",
-    label: "Home"
+    label: "Questions"
   },
   {
     imgURL: "/assets/icons/users.svg",

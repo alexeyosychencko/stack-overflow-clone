@@ -22,7 +22,7 @@ export const Answers = async ({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="mb-5 flex items-center justify-between">
         <h3 className="primary-text-gradient">{totalAnswers} Answers</h3>
         <Filter filters={AnswerFilters} />
       </div>
