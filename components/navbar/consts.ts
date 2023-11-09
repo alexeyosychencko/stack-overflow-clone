@@ -22,11 +22,6 @@ export const navbarLinks: NavbarLink[] = [
     label: "Find Jobs"
   },
   {
-    imgURL: "/assets/icons/tag.svg",
-    route: "/tags",
-    label: "Tags"
-  },
-  {
     imgURL: "/assets/icons/user.svg",
     route: "/profile",
     label: "Profile"

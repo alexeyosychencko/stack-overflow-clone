@@ -155,3 +155,111 @@ export async function createQuestion(params: {
     throw error;
   }
 }
+
+export async function upvoteQuestion(
+  questionId: string,
+  userId: string,
+  hasupVoted: boolean,
+  hasdownVoted: boolean,
+  path: string
+) {
+  const conn = await connectToDb();
+  const session = await conn.startSession();
+  try {
+    session.startTransaction();
+
+    let updateQuery = {};
+
+    if (hasupVoted) {
+      updateQuery = { $pull: { upvotes: userId } };
+    } else if (hasdownVoted) {
+      updateQuery = {
+        $pull: { downvotes: userId },
+        $push: { upvotes: userId }
+      };
+    } else {
+      updateQuery = { $addToSet: { upvotes: userId } };
+    }
+
+    const question = await QuestionModel.findByIdAndUpdate(
+      questionId,
+      updateQuery,
+      { new: true }
+    );
+
+    if (!question) {
+      throw new Error("Question not found");
+    }
+
+    // Increment author's reputation by +1/-1 for upvoting/revoking an upvote to the question
+    await UserModel.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -1 : 1 }
+    });
+
+    // Increment author's reputation by +10/-10 for recieving an upvote/downvote to the question
+    await UserModel.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasupVoted ? -10 : 10 }
+    });
+
+    await session.commitTransaction();
+    revalidatePath(path);
+  } catch (error) {
+    await session.abortTransaction();
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function downvoteQuestion(
+  questionId: string,
+  userId: string,
+  hasupVoted: boolean,
+  hasdownVoted: boolean,
+  path: string
+) {
+  const conn = await connectToDb();
+  const session = await conn.startSession();
+
+  try {
+    session.startTransaction();
+
+    let updateQuery = {};
+
+    if (hasdownVoted) {
+      updateQuery = { $pull: { downvote: userId } };
+    } else if (hasupVoted) {
+      updateQuery = {
+        $pull: { upvotes: userId },
+        $push: { downvotes: userId }
+      };
+    } else {
+      updateQuery = { $addToSet: { downvotes: userId } };
+    }
+
+    const question = await QuestionModel.findByIdAndUpdate(
+      questionId,
+      updateQuery,
+      { new: true }
+    );
+
+    if (!question) {
+      throw new Error("Question not found");
+    }
+
+    // Increment author's reputation
+    await UserModel.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasdownVoted ? -2 : 2 }
+    });
+
+    await UserModel.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasdownVoted ? -10 : 10 }
+    });
+
+    await session.commitTransaction();
+    revalidatePath(path);
+  } catch (error) {
+    await session.abortTransaction();
+    console.log(error);
+    throw error;
+  }
+}

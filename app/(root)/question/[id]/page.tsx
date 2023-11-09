@@ -12,9 +12,11 @@ import { getUserById } from "@/database/actions/user.action";
 import Answers from "@/components/shared/Answers";
 
 const Page = async ({
-  params
+  params,
+  searchParams
 }: {
   params: { [key: string]: string };
+  searchParams: { [key: string]: string };
 }): Promise<ReactElement> => {
   const { userId: clerkId } = auth();
   const mongoUser = clerkId ? await getUserById(clerkId) : null;
@@ -87,6 +89,7 @@ const Page = async ({
         questionId={question.id}
         userId={mongoUser?.id}
         totalAnswers={question.answers.length}
+        filter={searchParams?.filter}
       />
 
       {mongoUser?.id && (
