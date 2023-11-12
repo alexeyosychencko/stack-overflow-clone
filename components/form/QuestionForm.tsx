@@ -25,13 +25,13 @@ import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   type?: string;
-  mongoUserId: string;
+  userId: string;
   questionDetails?: string;
 }
 
 const QuestionForm = ({
   type,
-  mongoUserId,
+  userId,
   questionDetails
 }: Props): ReactElement => {
   const { theme } = useTheme();
@@ -58,13 +58,13 @@ const QuestionForm = ({
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof questionSchema>) {
     setIsSubmitting(true);
-    console.log(values, mongoUserId);
+
     try {
       await createQuestion({
         title: values.title,
         explanation: values.explanation,
         tags: values.tags,
-        author: mongoUserId,
+        author: userId,
         path: pathname
       });
 

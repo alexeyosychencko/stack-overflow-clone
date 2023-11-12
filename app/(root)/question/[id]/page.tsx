@@ -20,7 +20,7 @@ const Page = async ({
   searchParams: { [key: string]: string };
 }): Promise<ReactElement> => {
   const { userId: clerkId } = auth();
-  const mongoUser = clerkId ? await getUserById(clerkId) : null;
+  const user = clerkId ? await getUserById(clerkId) : null;
 
   const question = await getQuestionById(params.id);
 
@@ -44,9 +44,9 @@ const Page = async ({
             </p>
           </Link>
           <div className="flex justify-end">
-            {mongoUser?.id ? (
+            {user?.id ? (
               <Votes
-                userId={mongoUser?.id}
+                userId={user?.id}
                 upvotes={question.upvotes}
                 downvotes={question.downvotes}
                 withSaved={true}
@@ -99,14 +99,14 @@ const Page = async ({
 
       <Answers
         questionId={question.id}
-        userId={mongoUser?.id}
+        userId={user?.id}
         totalAnswers={question.answers.length}
         filter={searchParams?.filter}
       />
 
-      {mongoUser?.id && (
+      {user?.id && (
         <Suspense fallback={<div>Loading...</div>}>
-          <AnswerForm questionId={question.id} authorId={mongoUser?.id} />
+          <AnswerForm questionId={question.id} authorId={user?.id} />
         </Suspense>
       )}
     </>

@@ -5,15 +5,13 @@ import { redirect } from "next/navigation";
 import { ReactElement } from "react";
 
 const Page = async (): Promise<ReactElement> => {
-  const { userId } = auth();
-
-  if (!userId) {
+  const { userId: clerkId } = auth();
+  if (!clerkId) {
     return redirect("/sign-in");
   }
 
-  const mongoUser = await getUserById(userId);
-
-  if (!mongoUser) {
+  const user = await getUserById(clerkId);
+  if (!user) {
     return redirect("/sign-in");
   }
 
@@ -21,7 +19,7 @@ const Page = async (): Promise<ReactElement> => {
     <div>
       <h1 className="h1-bold text-dark100_light900">Ask a question</h1>
       <div className="mt-9">
-        <QuestionForm mongoUserId={mongoUser.id} />
+        <QuestionForm userId={user.id} />
       </div>
     </div>
   );
