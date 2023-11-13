@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactElement, useRef, useState } from "react";
+import React, { ReactElement, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { questionSchema } from "./validation";
 import * as z from "zod";
@@ -22,21 +22,22 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { createQuestion } from "@/database/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
+import { useFormStatus } from "react-dom";
 
 interface Props {
-  type?: string;
   userId: string;
   questionDetails?: string;
+  isEdit?: boolean;
 }
 
 const QuestionForm = ({
-  type,
+  isEdit,
   userId,
   questionDetails
 }: Props): ReactElement => {
   const { theme } = useTheme();
   const editorRef = useRef(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { pending } = useFormStatus();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -57,26 +58,21 @@ const QuestionForm = ({
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof questionSchema>) {
-    setIsSubmitting(true);
+    const error = await createQuestion({
+      title: values.title,
+      explanation: values.explanation,
+      tags: values.tags,
+      author: userId,
+      path: pathname
+    });
 
-    try {
-      await createQuestion({
-        title: values.title,
-        explanation: values.explanation,
-        tags: values.tags,
-        author: userId,
-        path: pathname
-      });
-
+    if (error?.error) {
       // TODO: add toast
-
-      router.push("/");
-    } catch (error) {
-      console.log(error);
-      // TODO: Handle error, show toast
+      return;
     }
 
-    setIsSubmitting(false);
+    // TODO: add toast
+    router.push("/");
   }
 
   const handleInputTagKeyDown = (
@@ -220,7 +216,7 @@ const QuestionForm = ({
               <FormControl className="mt-3.5">
                 <>
                   <Input
-                    disabled={type === "Edit"}
+                    disabled={isEdit}
                     className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                     placeholder="Add tags..."
                     onKeyDown={(e) => handleInputTagKeyDown(e, field)}
@@ -233,13 +229,11 @@ const QuestionForm = ({
                           key={tag}
                           className="subtle-medium background-light800_dark300 text-light400_light500 flex items-center justify-center gap-2 rounded-md border-none px-4 py-2 capitalize"
                           onClick={() =>
-                            type !== "Edit"
-                              ? handleTagRemove(tag, field)
-                              : () => {}
+                            !isEdit ? handleTagRemove(tag, field) : () => {}
                           }
                         >
                           {tag}
-                          {type !== "Edit" && (
+                          {!isEdit && (
                             <Image
                               src="/assets/icons/close.svg"
                               alt="Close icon"
@@ -265,12 +259,12 @@ const QuestionForm = ({
         <Button
           type="submit"
           className="primary-gradient w-fit !text-light-900"
-          disabled={isSubmitting}
+          disabled={pending}
         >
-          {isSubmitting ? (
-            <>{type === "Edit" ? "Editing..." : "Posting..."}</>
+          {pending ? (
+            <>{isEdit ? "Editing..." : "Posting..."}</>
           ) : (
-            <>{type === "Edit" ? "Edit Question" : "Ask a Question"}</>
+            <>{isEdit ? "Edit Question" : "Ask a Question"}</>
           )}
         </Button>
       </form>

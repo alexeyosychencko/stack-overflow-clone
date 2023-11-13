@@ -12,7 +12,12 @@ export async function createAnswer(params: {
   author: string;
   question: string;
   path: string;
-}): Promise<void> {
+}): Promise<
+  | {
+      error: unknown;
+    }
+  | undefined
+> {
   const conn = await connectToDb();
   const session = await conn.startSession();
 
@@ -38,7 +43,9 @@ export async function createAnswer(params: {
   } catch (error) {
     session.abortTransaction();
     console.log(error);
-    throw error;
+    return {
+      error
+    };
   }
 }
 

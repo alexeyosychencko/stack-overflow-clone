@@ -101,7 +101,7 @@ export async function createQuestion(params: {
   tags: string[];
   author: string;
   path: string;
-}): Promise<void> {
+}) {
   const conn = await connectToDb();
   const session = await conn.startSession();
 
@@ -152,7 +152,9 @@ export async function createQuestion(params: {
   } catch (error) {
     await session.abortTransaction();
     console.log(error);
-    throw error;
+    return {
+      error
+    };
   }
 }
 

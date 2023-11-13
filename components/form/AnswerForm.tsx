@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useForm } from "react-hook-form";
@@ -17,6 +17,7 @@ import {
 } from "../ui/form";
 import { Editor } from "@tinymce/tinymce-react";
 import { Button } from "../ui/button";
+import { useFormStatus } from "react-dom";
 
 const AnswerForm = ({
   questionId,
@@ -27,7 +28,7 @@ const AnswerForm = ({
 }): ReactElement => {
   const { theme } = useTheme();
   const pathname = usePathname();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { pending } = useFormStatus();
   const editorRef = useRef(null);
 
   const form = useForm<z.infer<typeof AnswerSchema>>({
@@ -38,27 +39,23 @@ const AnswerForm = ({
   });
 
   async function onSubmit(values: z.infer<typeof AnswerSchema>) {
-    setIsSubmitting(true);
+    const error = await createAnswer({
+      content: values.answer,
+      author: authorId,
+      question: questionId,
+      path: pathname
+    });
 
-    try {
-      await createAnswer({
-        content: values.answer,
-        author: authorId,
-        question: questionId,
-        path: pathname
-      });
+    if (error?.error) {
+      // TODO: show toast
+      return;
+    }
 
-      form.reset();
+    form.reset();
 
-      if (editorRef.current) {
-        const editor = editorRef.current as any;
-        editor.setContent("");
-      }
-    } catch (error) {
-      // TODO: Handle error, show toast
-      console.error(error);
-    } finally {
-      setIsSubmitting(false);
+    if (editorRef.current) {
+      const editor = editorRef.current as any;
+      editor.setContent("");
     }
   }
 
@@ -126,9 +123,9 @@ const AnswerForm = ({
             <Button
               type="submit"
               className="primary-gradient w-fit text-white"
-              disabled={isSubmitting}
+              disabled={pending}
             >
-              {isSubmitting ? "Submitting..." : "Submit"}
+              {pending ? "Submitting..." : "Submit"}
             </Button>
           </div>
         </form>
