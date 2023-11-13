@@ -30,6 +30,7 @@ export const Answers = async ({
       <div>
         {answers.map((answer: Answer & { author: User }) => (
           <AnswerCard
+            id={answer.id}
             key={answer.id}
             createdAt={answer.createdAt}
             content={answer.content}
@@ -37,6 +38,8 @@ export const Answers = async ({
             userId={userId}
             authorPicture={answer.author.picture}
             authorName={answer.author.name}
+            upvotes={answer.upvotes}
+            downvotes={answer.downvotes}
           />
         ))}
       </div>

@@ -168,21 +168,13 @@ export async function toggleSaveQuestion(
 
     const isQuestionSaved = user.saved.includes(questionId);
 
-    if (isQuestionSaved) {
-      // remove question from saved
-      await UserModel.findByIdAndUpdate(
-        userId,
-        { $pull: { saved: questionId } },
-        { new: true }
-      );
-    } else {
-      // add question to saved
-      await UserModel.findByIdAndUpdate(
-        userId,
-        { $addToSet: { saved: questionId } },
-        { new: true }
-      );
-    }
+    await UserModel.findByIdAndUpdate(
+      userId,
+      isQuestionSaved
+        ? { $pull: { saved: questionId } }
+        : { $addToSet: { saved: questionId } },
+      { new: true }
+    );
 
     revalidatePath(path);
   } catch (error) {

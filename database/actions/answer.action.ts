@@ -53,9 +53,8 @@ export async function getAnswers(
   questionId: string,
   sortBy?: string
 ): Promise<(Answer & { author: User })[]> {
+  await connectToDb();
   try {
-    await connectToDb();
-
     let sortOptions = {};
 
     switch (sortBy) {
@@ -86,5 +85,103 @@ export async function getAnswers(
   } catch (err) {
     console.error(err);
     throw err;
+  }
+}
+
+export async function upvoteAnswer(
+  answerId: string,
+  userId: string,
+  hasUpvoted: boolean,
+  hasDownvoted: boolean,
+  path: string
+) {
+  const conn = await connectToDb();
+  const session = await conn.startSession();
+  try {
+    session.startTransaction();
+    let updateQuery = {};
+
+    if (hasUpvoted) {
+      updateQuery = { $pull: { upvotes: userId } };
+    } else if (hasDownvoted) {
+      updateQuery = {
+        $pull: { downvotes: userId },
+        $push: { upvotes: userId }
+      };
+    } else {
+      updateQuery = { $addToSet: { upvotes: userId } };
+    }
+
+    const answer = await AnswerModel.findByIdAndUpdate(answerId, updateQuery, {
+      new: true
+    });
+
+    if (!answer) {
+      throw new Error("Answer not found");
+    }
+
+    // Increment author's reputation
+    await UserModel.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasDownvoted ? -2 : 2 }
+    });
+
+    await UserModel.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasDownvoted ? -10 : 10 }
+    });
+    await session.commitTransaction();
+    revalidatePath(path);
+  } catch (error) {
+    await session.abortTransaction();
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function downvoteAnswer(
+  answerId: string,
+  userId: string,
+  hasupVoted: boolean,
+  hasdownVoted: boolean,
+  path: string
+) {
+  const conn = await connectToDb();
+  const session = await conn.startSession();
+  try {
+    session.startTransaction();
+
+    let updateQuery = {};
+    if (hasdownVoted) {
+      updateQuery = { $pull: { downvote: userId } };
+    } else if (hasupVoted) {
+      updateQuery = {
+        $pull: { upvotes: userId },
+        $push: { downvotes: userId }
+      };
+    } else {
+      updateQuery = { $addToSet: { downvotes: userId } };
+    }
+
+    const answer = await AnswerModel.findByIdAndUpdate(answerId, updateQuery, {
+      new: true
+    });
+
+    if (!answer) {
+      throw new Error("Answer not found");
+    }
+
+    // Increment author's reputation
+    await UserModel.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasdownVoted ? -2 : 2 }
+    });
+
+    await UserModel.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasdownVoted ? -10 : 10 }
+    });
+    await session.commitTransaction();
+    revalidatePath(path);
+  } catch (error) {
+    await session.abortTransaction();
+    console.log(error);
+    throw error;
   }
 }
