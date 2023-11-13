@@ -10,7 +10,7 @@ import AnswerForm from "@/components/form/AnswerForm";
 import { auth } from "@clerk/nextjs";
 import { getUserById } from "@/database/actions/user.action";
 import Answers from "@/components/shared/Answers";
-import Votes from "@/components/shared/Votes";
+import QuestionVotes from "@/components/shared/QuestionVotes";
 
 const Page = async ({
   params,
@@ -45,13 +45,12 @@ const Page = async ({
           </Link>
           <div className="flex justify-end">
             {user?.id ? (
-              <Votes
-                userId={user?.id}
+              <QuestionVotes
+                userId={user.id}
+                questionId={question.id}
                 upvotes={question.upvotes}
                 downvotes={question.downvotes}
-                withSaved={true}
-                // hasSaved={question.savedBy.includes(mongoUser?.id)}
-                // upvoteHandler={async () => {
+                userQuestions={user.saved.map((q) => q.toString())}
               />
             ) : null}
           </div>

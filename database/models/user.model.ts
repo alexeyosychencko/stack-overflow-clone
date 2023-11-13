@@ -68,8 +68,8 @@ class User {
   @prop({ default: 0 })
   public reputation?: number;
 
-  @prop({ ref: "Question" })
-  public saved?: Ref<Question>[];
+  @prop({ ref: "Question", default: [] })
+  public saved: Ref<Question>[];
 
   @prop({ default: Date.now })
   public joinedAt: Date;

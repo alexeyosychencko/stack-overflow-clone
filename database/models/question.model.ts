@@ -39,7 +39,7 @@ class Question {
   @typegoose.prop({ required: true })
   public explanation: string;
 
-  @typegoose.prop({ ref: "Tag" })
+  @typegoose.prop({ ref: "Tag", default: [] })
   public tags: typegoose.Ref<Tag>[];
 
   @typegoose.prop({ required: true, default: 0 })
@@ -54,7 +54,7 @@ class Question {
   @typegoose.prop({ ref: "User" })
   public author: typegoose.Ref<User>;
 
-  @typegoose.prop({ ref: "Answer" })
+  @typegoose.prop({ ref: "Answer", default: [] })
   public answers: typegoose.Ref<Answer>[];
 
   @typegoose.prop({ required: true, default: Date.now })

@@ -38,10 +38,10 @@ class Tag {
   @typegoose.prop({ required: true })
   public description: string;
 
-  @typegoose.prop({ ref: () => Question })
+  @typegoose.prop({ ref: "Question" })
   public questions: typegoose.Ref<Question>[];
 
-  @typegoose.prop({ ref: () => User })
+  @typegoose.prop({ ref: "User" })
   public followers: typegoose.Ref<User>[];
 
   @typegoose.prop({ default: Date.now })

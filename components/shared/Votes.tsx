@@ -8,7 +8,6 @@ const Votes = ({
   userId,
   upvotes,
   downvotes,
-  withSaved,
   hasSaved,
   upvoteHandler,
   downvoteHandler,
@@ -17,18 +16,17 @@ const Votes = ({
   userId: string;
   upvotes: string[];
   downvotes: string[];
-  withSaved?: boolean;
   hasSaved?: boolean;
   upvoteHandler?: () => Promise<void>;
   downvoteHandler?: () => Promise<void>;
   saveHandler?: () => Promise<void>;
 }): ReactElement => {
   const [isProcessing, setIsProcessing] = useState(false);
-
   const hasupVoted = upvotes.includes(userId);
   const hasdownVoted = downvotes.includes(userId);
 
-  const handleAction = async (action: () => Promise<void>) => {
+  const handleAction = async (action?: () => Promise<void>) => {
+    if (!action) return;
     setIsProcessing(true);
     await action();
     setIsProcessing(false);
@@ -65,9 +63,9 @@ const Votes = ({
                 height={18}
                 alt="upvote"
                 className="cursor-pointer"
-                // onClick={async () => {
-                //   await handleAction(upvoteHandler);
-                // }}
+                onClick={async () => {
+                  await handleAction(upvoteHandler);
+                }}
               />
 
               <div className="flex-center background-light700_dark400 min-w-[18px] rounded-sm p-1">
@@ -88,9 +86,9 @@ const Votes = ({
                 height={18}
                 alt="downvote"
                 className="cursor-pointer"
-                // onClick={async () => {
-                //   await handleAction(downvoteHandler);
-                // }}
+                onClick={async () => {
+                  await handleAction(downvoteHandler);
+                }}
               />
 
               <div className="flex-center background-light700_dark400 min-w-[18px] rounded-sm p-1">
@@ -101,7 +99,7 @@ const Votes = ({
             </div>
           </div>
 
-          {withSaved ? (
+          {saveHandler ? (
             <Image
               src={
                 hasSaved
@@ -113,7 +111,6 @@ const Votes = ({
               alt="star"
               className="cursor-pointer"
               onClick={async () => {
-                if (!saveHandler) return;
                 await handleAction(saveHandler);
               }}
             />

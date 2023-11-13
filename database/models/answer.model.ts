@@ -33,10 +33,10 @@ class Answer {
 
   id: string;
 
-  @typegoose.prop({ required: true, ref: () => User })
+  @typegoose.prop({ required: true, ref: "User" })
   public author: typegoose.Ref<User>;
 
-  @typegoose.prop({ required: true, ref: () => Question })
+  @typegoose.prop({ required: true, ref: "Question" })
   public question: typegoose.Ref<Question>;
 
   @typegoose.prop({ required: true })

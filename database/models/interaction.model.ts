@@ -34,19 +34,19 @@ class Interaction {
   _id: mongoose.Types.ObjectId | string;
   public id: string;
 
-  @typegoose.prop({ ref: () => User })
+  @typegoose.prop({ ref: "User" })
   public user: typegoose.Ref<User>;
 
   @typegoose.prop({ required: true })
   public action: string;
 
-  @typegoose.prop({ ref: () => Question })
+  @typegoose.prop({ ref: "Question" })
   public question: typegoose.Ref<Question>;
 
-  @typegoose.prop({ ref: () => Answer })
+  @typegoose.prop({ ref: "Answer" })
   public answer: typegoose.Ref<Answer>;
 
-  @typegoose.prop({ ref: () => Tag })
+  @typegoose.prop({ ref: "Tag" })
   public tags: typegoose.Ref<Tag>[];
 
   @typegoose.prop({ default: Date.now })

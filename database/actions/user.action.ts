@@ -152,3 +152,41 @@ export async function deleteUser(clerkId: string): Promise<User> {
     throw error;
   }
 }
+
+export async function toggleSaveQuestion(
+  userId: string,
+  questionId: string,
+  path: string
+) {
+  await connectToDb();
+  try {
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const isQuestionSaved = user.saved.includes(questionId);
+
+    if (isQuestionSaved) {
+      // remove question from saved
+      await UserModel.findByIdAndUpdate(
+        userId,
+        { $pull: { saved: questionId } },
+        { new: true }
+      );
+    } else {
+      // add question to saved
+      await UserModel.findByIdAndUpdate(
+        userId,
+        { $addToSet: { saved: questionId } },
+        { new: true }
+      );
+    }
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
