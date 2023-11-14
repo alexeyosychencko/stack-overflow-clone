@@ -3,9 +3,10 @@
 import { UserModel, User } from "@/database/models/user.model";
 import connectToDb from "../mongoose";
 import { revalidatePath } from "next/cache";
-import { QuestionModel } from "@/database/models/question.model";
+import { Question, QuestionModel } from "@/database/models/question.model";
 import { FilterQuery } from "mongoose";
 import { UserFiltersValues } from "@/components/shared/filter/consts";
+import { Tag, TagModel } from "../models/tag.model";
 
 export async function getUserById(clerkId: string): Promise<User | null> {
   try {
@@ -181,4 +182,30 @@ export async function toggleSaveQuestion(
     console.log(error);
     throw error;
   }
+}
+
+export async function getSavedQuestions(
+  clerkId: string,
+  searchQuery?: string
+): Promise<(Question & { tags: Tag[]; author: User })[]> {
+  await connectToDb();
+  const query: FilterQuery<typeof Question> = searchQuery
+    ? { title: { $regex: new RegExp(searchQuery, "i") } }
+    : {};
+
+  const user = await UserModel.findOne<
+    User & { saved: (Question & { tags: Tag[]; author: User })[] }
+  >({ clerkId }).populate({
+    path: "saved",
+    match: query,
+    populate: [
+      { path: "tags", model: TagModel },
+      { path: "author", model: UserModel }
+    ]
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user.saved;
 }
