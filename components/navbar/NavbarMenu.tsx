@@ -6,8 +6,10 @@ import { navbarLinks } from "./consts";
 import Link from "next/link";
 import Image from "next/image";
 import { SheetClose } from "@/components/ui/sheet";
+import { useAuth } from "@clerk/nextjs";
 
 const NavbarMenu = ({ isMobile }: { isMobile?: boolean }): ReactElement => {
+  const { userId } = useAuth();
   const pathname = usePathname();
 
   return (
@@ -16,6 +18,11 @@ const NavbarMenu = ({ isMobile }: { isMobile?: boolean }): ReactElement => {
         const isActive =
           (pathname.includes(link.route) && link.route.length > 1) ||
           pathname === link.route;
+
+        if (link.route === "/profile" && userId) {
+          link.route = `${link.route}/${userId}`;
+        }
+
         return isMobile ? (
           <SheetClose key={link.route}>
             <MenuLink {...link} isActive={isActive} />

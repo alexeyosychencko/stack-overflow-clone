@@ -16,11 +16,11 @@ export const navbarLinks: NavbarLink[] = [
     route: "/collection",
     label: "Collections"
   },
-  {
-    imgURL: "/assets/icons/suitcase.svg",
-    route: "/jobs",
-    label: "Find Jobs"
-  },
+  // {
+  //   imgURL: "/assets/icons/suitcase.svg",
+  //   route: "/jobs",
+  //   label: "Find Jobs"
+  // },
   {
     imgURL: "/assets/icons/user.svg",
     route: "/profile",

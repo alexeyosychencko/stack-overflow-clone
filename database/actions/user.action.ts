@@ -7,6 +7,7 @@ import { Question, QuestionModel } from "@/database/models/question.model";
 import { FilterQuery } from "mongoose";
 import { UserFiltersValues } from "@/components/shared/filter/consts";
 import { Tag, TagModel } from "../models/tag.model";
+import { Answer, AnswerModel } from "../models/answer.model";
 
 export async function getUserById(clerkId: string): Promise<User | null> {
   try {
@@ -208,4 +209,46 @@ export async function getSavedQuestions(
     throw new Error("User not found");
   }
   return user.saved;
+}
+
+export async function getUserInfo(clerkId: string): Promise<{
+  user: User;
+  questions: (Question & { tags: Tag[]; author: User })[];
+  answers: (Answer & { author: User })[];
+  tags: Tag[];
+}> {
+  await connectToDb();
+  try {
+    const user = await UserModel.findOne({ clerkId });
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const tags = await TagModel.find({ followers: user._id });
+    const questions = (await QuestionModel.find({
+      author: user._id
+    })
+      .populate({
+        path: "tags",
+        model: TagModel
+      })
+      .populate({ path: "author", model: UserModel })) as (Question & {
+      tags: Tag[];
+      author: User;
+    })[];
+    const answers = (await AnswerModel.find({ author: user._id }).populate({
+      path: "author",
+      model: UserModel
+    })) as (Answer & { author: User })[];
+
+    return {
+      user,
+      questions,
+      answers,
+      tags
+    };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
