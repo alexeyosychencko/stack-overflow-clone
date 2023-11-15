@@ -91,6 +91,10 @@ export async function POST(req: Request) {
       path: `/profile/${id}`
     });
 
+    if ("error" in mongoUser) {
+      return NextResponse.json({ message: "ERROR", error: mongoUser.error });
+    }
+
     return NextResponse.json({ message: "OK", user: mongoUser });
   }
 

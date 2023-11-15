@@ -103,20 +103,29 @@ export async function updateUser(data: {
   clerkId: string;
   updateData: Partial<User>;
   path: string;
-}): Promise<void> {
+}): Promise<
+  | {
+      error: unknown;
+    }
+  | User
+> {
   try {
     await connectToDb();
 
     const { clerkId, updateData, path } = data;
 
-    await UserModel.findOneAndUpdate({ clerkId }, updateData, {
+    const user = await UserModel.findOneAndUpdate({ clerkId }, updateData, {
       new: true
     });
 
     revalidatePath(path);
+
+    return user;
   } catch (error) {
     console.log(error);
-    throw error;
+    return {
+      error
+    };
   }
 }
 
