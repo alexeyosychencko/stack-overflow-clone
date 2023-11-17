@@ -29,22 +29,15 @@ export async function getQuestionById(
 
 export async function getQuestions({
   searchQuery,
-  filter,
-  page = 1,
-  pageSize = 10
+  filter
 }: {
-  page?: number;
-  pageSize?: number;
   searchQuery?: string;
   filter?: string;
 }): Promise<{
   questions: (Question & { tags: Tag[]; author: User; answers: Answer[] })[];
-  isNext: boolean;
 }> {
   try {
     await connectToDb();
-
-    const skipAmount = (page - 1) * pageSize;
 
     const query: FilterQuery<typeof Question> = {};
 
@@ -80,15 +73,9 @@ export async function getQuestions({
     >(query)
       .populate({ path: "tags", model: TagModel })
       .populate({ path: "author", model: UserModel })
-      .skip(skipAmount)
-      .limit(pageSize)
       .sort(sortOptions);
 
-    const totalQuestions = await QuestionModel.countDocuments(query);
-
-    const isNext = totalQuestions > skipAmount + questions.length;
-
-    return { questions, isNext };
+    return { questions };
   } catch (error) {
     console.log(error);
     throw error;

@@ -22,22 +22,15 @@ export async function getUserById(clerkId: string): Promise<User | null> {
 
 export async function getAllUsers({
   searchQuery,
-  filter,
-  page = 1,
-  pageSize = 10
+  filter
 }: {
   searchQuery?: string;
   filter?: string;
-  page?: number;
-  pageSize?: number;
 }): Promise<{
   users: User[];
-  isNext: boolean;
 }> {
   try {
     await connectToDb();
-
-    const skipAmount = (page - 1) * pageSize;
 
     const query: FilterQuery<typeof User> = {};
 
@@ -65,15 +58,9 @@ export async function getAllUsers({
         break;
     }
 
-    const users = await UserModel.find(query)
-      .sort(sortOptions)
-      .skip(skipAmount)
-      .limit(pageSize);
+    const users = await UserModel.find(query).sort(sortOptions);
 
-    const totalUsers = await UserModel.countDocuments(query);
-    const isNext = totalUsers > skipAmount + users.length;
-
-    return { users, isNext };
+    return { users };
   } catch (error) {
     console.log(error);
     throw error;
