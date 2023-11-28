@@ -39,9 +39,9 @@ const RightSidebar = async (): Promise<ReactElement> => {
         <h3 className="h3-bold text-dark200_light900">Popular Tags</h3>
         <ul className="mt-7 flex w-full flex-col gap-4">
           {popularTags.map((tag) => (
-            <li key={tag.id}>
+            <li key={tag._id}>
               <RenderTag
-                id={tag.id}
+                id={tag._id}
                 name={tag.name}
                 totalQuestions={tag.numberOfQuestions}
                 showCount
